@@ -1,0 +1,3 @@
+foot.blade.php dan head.blade.php khusus untuk register dan login
+
+footer.blade.php dan header.blade.php khusus untuk page di dalam admin

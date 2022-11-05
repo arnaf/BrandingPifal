@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+require_once('includes/auth.php');
+
+
+
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('/auth/login');
+})->name('loginform');
+
