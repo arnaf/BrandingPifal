@@ -98,6 +98,11 @@
                       <i class="bi bi-circle"></i><span>Kategori Obat</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ url('/alkesclasification') }}">
+                      <i class="bi bi-circle"></i><span>Klasifikasi Alkes</span>
+                    </a>
+                </li>
 
             </ul>
           </li>
