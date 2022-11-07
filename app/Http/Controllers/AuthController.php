@@ -50,6 +50,17 @@ class AuthController extends Controller
 
     }
 
+    public function dashboard() {
+
+        return view('menus.dashboard');
+    }
+
+
+
+    public function registertype(){
+
+    }
+    
     public function logout()
     {
         Auth::logout();
@@ -58,8 +69,5 @@ class AuthController extends Controller
     }
 
 
-    public function dashboard() {
 
-        return view('menus.dashboard');
-    }
 }
