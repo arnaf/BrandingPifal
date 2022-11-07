@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DrugCategory extends Model
+class AlkesClasification extends Model
 {
     protected $fillable = [
         'name',
     ];
 
-    public function drug()
+    public function alkes()
     {
-        return $this->hasMany(Drug::class);
+        return $this->hasMany(Alkes::class);
     }
 
+  
 }

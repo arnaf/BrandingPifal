@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 require_once('includes/auth.php');
+require_once('includes/drug.php');
+require_once('includes/alkes.php');
 
 
 
