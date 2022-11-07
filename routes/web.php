@@ -21,3 +21,12 @@ Route::get('/', function () {
     return view('/auth/login');
 })->name('loginform');
 
+Route::get('/register', function () {
+    return view('components.auth.register');
+})->name('registerform');
+
+
+Route::post('/typeRegist', [RegisterController::class, 'registertype'])->name('registertype');
+
+Route::post('/register', [RegisterController::class, 'register'])->name('register');
+

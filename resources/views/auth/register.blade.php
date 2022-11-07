@@ -14,7 +14,7 @@
                       <div class="d-flex justify-content-center py-4">
                         <a href="index.html" class="logo d-flex align-items-center w-auto">
                           <img src="assets/img/logo.png" alt="">
-                          <span class="d-none d-lg-block">WeFI</span>
+                          <span class="d-none d-lg-block">Ah potek</span>
                         </a>
                       </div><!-- End Logo -->
 
@@ -27,13 +27,38 @@
                             <p class="text-center small">Aplikasi Apotek - Ah potek</p>
                           </div>
 
-                          <form class="row g-3 needs-validation" novalidate action="{{ route('doctorregister') }}" method="POST" >
+                          <form class="row g-3 needs-validation" novalidate action="{{ route('register') }}" method="POST" >
                             @csrf
                             {{-- <div class="col-12">
                               <label for="yourName" class="form-label">Your Name</label>
                               <input type="text" name="name" class="form-control" id="yourName" required>
                               <div class="invalid-feedback">Please, enter your name!</div>
                             </div> --}}
+
+
+
+
+                            <div class="row mb-3">
+                                <label for="kelasMember" class="col-sm-2 col-form-label">Daftar Sebagai</label>
+                                <div class="col-sm-10">
+                                <form action="{{ route('typeRegist') }}" method="post">
+                                    @csrf
+                                    <select name="kelasMember" id="kelasMember" class="form-control" required>
+                                            <option value="" selected disabled>Pilih role</option>
+
+                                            <option value="patient" name="patient"><button type="submit">Pasien</button></option>
+                                            <option value="doctor" name="doctor"><button type="submit">Dokter</button></option>
+                                    </select>
+                                </form>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
 
                             <div class="col-12">
                               <label for="email" class="form-label">Email</label>
@@ -67,19 +92,19 @@
                             @enderror
 
                             <div class="col-12">
-                                <label for="nama" class="form-label">Nama Lengkap</label>
-                                <input type="text" name="nama" class="form-control" id="nama" required>
+                                <label for="doctorName" class="form-label">Nama</label>
+                                <input type="text" name="doctorName" class="form-control" id="doctorName" required>
                                 <div class="invalid-feedback">Masukkan nama lengkap Anda!</div>
                             </div>
-                            @error('nama')
+                            @error('doctorName')
                             <span class="text-danger" style="display: block;">
                                 {{ $message }}
                             </span>
                             @enderror
 
                             <div class="col-12">
-                                <label for="tgl_lhr" class="form-label">Tanggal Lahir</label>
-                                <input type="date" name="tgl_lhr" class="form-control" id="tgl_lhr" required>
+                                <label for="doctorDateBirth" class="form-label">Tanggal Lahir</label>
+                                <input type="date" name="doctorDateBirth" class="form-control" id="doctorDateBirth" required>
                                 <div class="invalid-feedback">Masukkan tanggal lahir Anda!</div>
                             </div>
                             @error('tgl_lhr')
