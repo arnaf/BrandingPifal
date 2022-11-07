@@ -87,15 +87,15 @@
 
            <!-- End Icons Nav -->
 
-        
+
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
               <i class="bi bi-journals"></i><span>Data Master</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="icons-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="">
-                      <i class="bi bi-circle"></i><span>Member</span>
+                    <a href="{{ url('/drugcategory') }}">
+                      <i class="bi bi-circle"></i><span>Kategori Obat</span>
                     </a>
                 </li>
 
