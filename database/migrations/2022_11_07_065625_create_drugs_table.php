@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('drugs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('drug_category_id');
+            $table->foreignId('drug_type_id');
             $table->foreignId('unit_id');
 
             $table->string('name');
@@ -23,12 +24,12 @@ return new class extends Migration
             $table->decimal('price', 14, 2);
             $table->text('photo');
             $table->string('bpjsStatus');
-            $table->string('type');
-            $table->string('activeSubstance');
+            $table->string('patentStatus');
             $table->integer('stock');
-            $table->date('expiredDate');
+
 
             $table->foreign('drug_category_id')->references('id')->on('drug_categories')->onDelete('restrict');
+            $table->foreign('drug_type_id')->references('id')->on('drug_types')->onDelete('restrict');
             $table->foreign('unit_id')->references('id')->on('units')->onDelete('restrict');
             $table->timestamps();
         });

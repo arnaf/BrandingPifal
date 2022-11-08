@@ -19,4 +19,9 @@ class Alkes extends Model
     {
         return $this->belongsTo(AlkesCategory::class);
     }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
 }

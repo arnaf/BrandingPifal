@@ -10,7 +10,7 @@
       <div class="card">
         <div class="card-header">
           <div class="col-sm-6">
-              <h1>Klasifikasi Alkes</h1>
+              <h1>Data Unit</h1>
             </div>
 
           <div class="card-tools">
@@ -20,13 +20,13 @@
         <div class="card-body">
           <div class="table-responsive">
 
-                  <button type="button" class="my-3 btn btn-primary" onclick="create()">Tambah Klasifikasi Alkes</button>
+                  <button type="button" class="my-3 btn btn-primary" onclick="create()">Tambah Data Unit</button>
 
               <table class="table table-hover table-striped table-border" id="table">
 
                   <thead>
                       <th>#</th>
-                      <th>Nama Klasifikasi Alkes</th>
+                      <th>Nama Data Unit</th>
                       <th>Tindakan</th>
                   </thead>
 
@@ -38,8 +38,8 @@
           </div>
         </div>
       </div>
-      @include('menus.modals.alkesclasifications.create')
-      @include('menus.modals.alkesclasifications.edit')
+      @include('menus.modals.units.create')
+      @include('menus.modals.units.edit')
 
       <!-- /.card -->
 

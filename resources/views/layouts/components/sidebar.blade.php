@@ -103,6 +103,23 @@
                       <i class="bi bi-circle"></i><span>Klasifikasi Alkes</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ url('/unit') }}">
+                      <i class="bi bi-circle"></i><span>Unit</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url('/drugtype') }}">
+                      <i class="bi bi-circle"></i><span>Jenis Obat</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url('/drug') }}">
+                      <i class="bi bi-circle"></i><span>Obat</span>
+                    </a>
+                </li>
 
             </ul>
           </li>
