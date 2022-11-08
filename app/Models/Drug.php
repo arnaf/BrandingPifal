@@ -8,15 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 class Drug extends Model
 {
     protected $fillable = [
-        'name', 'brand', 'price', 'photo', 'bpjsStatus', 'stock', 'expiredDate'
+        'name', 'brand', 'price', 'photo', 'bpjsStatus', 'patentStatus', 'stock', 'drug_category_id', 'drug_type_id', 'unit_id'
     ];
 
     protected $hidden = [
-        'drug_category_id', 'unit_id'
+        
     ];
 
     public function drugCategory()
     {
         return $this->belongsTo(DrugCategory::class);
+    }
+
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
+
+    public function drugType()
+    {
+        return $this->belongsTo(DrugType::class);
     }
 }

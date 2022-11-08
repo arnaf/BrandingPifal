@@ -20,13 +20,19 @@
         <div class="card-body">
           <div class="table-responsive">
 
-                  <button type="button" class="my-3 btn btn-primary" onclick="create()">Obat</button>
+                  <button type="button" class="my-3 btn btn-primary" onclick="create()">Tambah Data Obat</button>
 
               <table class="table table-hover table-striped table-border" id="table">
 
                   <thead>
                       <th>#</th>
                       <th>Nama Obat</th>
+                      <th>Kategori</th>
+                      <th>Merk Dagang</th>
+                      <th>Tipe Obat</th>
+                      <th>Jenis Paten</th>
+                      <th>Satuan Kemasan</th>
+                      <th>Status BPJS</th>
                       <th>Tindakan</th>
                   </thead>
 
@@ -38,8 +44,8 @@
           </div>
         </div>
       </div>
-      @include('menus.modals.drug.create')
-      @include('menus.modals.drug.edit')
+      @include('menus.modals.drugs.create')
+      @include('menus.modals.drugs.edit')
 
       <!-- /.card -->
 
