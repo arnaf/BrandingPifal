@@ -171,6 +171,11 @@ class DrugController extends Controller
     public function edit(Request $request, $id)
     {
         if($request->hasFile('drugPhotoEdit')){
+
+            $drug = Drug::find($id);
+            $image_path = public_path("photos/drugs/{$drug->photo}");
+            unlink($image_path);
+            
         $extension = $request->file('drugPhotoEdit')->getClientOriginalExtension();
 
         $drugPhotoEdit = date('YmdHis').'.'.$extension;
@@ -182,7 +187,7 @@ class DrugController extends Controller
         }
         if($request == NULL) {
             $json = [
-                'msg'       => 'Mohon masukan data member',
+                'msg'       => 'Mohon masukan data obat',
                 'status'    => false
             ];
 
@@ -274,7 +279,9 @@ class DrugController extends Controller
 
     public function destroy($id)
     {
-
+        $drug = Drug::find($id);
+        $image_path = public_path("photos/drugs/{$drug->photo}");
+        unlink($image_path);
             try{
 
               DB::transaction(function() use($id) {
