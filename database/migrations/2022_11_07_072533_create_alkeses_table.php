@@ -23,6 +23,8 @@ return new class extends Migration
             $table->decimal('price', 14, 2);
             $table->text('photo');
             $table->string('bpjsStatus');
+            $table->string('electroType');
+            $table->string('riskType');
             $table->integer('stock');
 
             $table->foreign('alkes_clasification_id')->references('id')->on('alkes_clasifications')->onDelete('restrict');

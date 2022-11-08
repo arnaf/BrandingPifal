@@ -121,6 +121,13 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{ url('/alkes') }}">
+                      <i class="bi bi-circle"></i><span>Alkes</span>
+                    </a>
+                </li>
+
+
             </ul>
           </li>
 
