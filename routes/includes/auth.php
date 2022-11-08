@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
+
 use App\Http\Controllers\DrugCategoryController;
 use App\Http\Controllers\RoleController;
+
 
 
 
@@ -24,11 +26,10 @@ Route::group([
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-    Route::get('/drugcategory/{id}', [DrugCategoryController::class, 'show'])->name('drugcategory');
-    Route::get('/drugcategory', [DrugCategoryController::class, 'index'])->name('drugcategory');
-    Route::post('/drugcategory', [DrugCategoryController::class, 'store']);
-    Route::post('/drugcategory/{id}', [DrugCategoryController::class, 'edit']);
-    Route::delete('/drugcategory/{id}', [DrugCategoryController::class, 'destroy']);
+
+
+
+
 
     Route::get('/role/{id}', [RoleController::class, 'show'])->name('role');
     Route::get('/role', [RoleController::class, 'index'])->name('role');

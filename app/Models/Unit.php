@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DrugCategory extends Model
+class Unit extends Model
 {
     protected $fillable = [
         'name',
@@ -15,5 +15,9 @@ class DrugCategory extends Model
     {
         return $this->hasMany(Drug::class);
     }
-
+    
+    public function alkes()
+    {
+        return $this->hasMany(Alkes::class);
+    }
 }

@@ -1,5 +1,5 @@
 <script>
-    let drug_category_id;
+    let unit_id;
 
     const create = () => {
         $('#createForm').trigger('reset');
@@ -8,7 +8,7 @@
 
     const deleteData = (id) => {
         Swal.fire({
-            title: 'Apa anda yakin untuk kategori obat ini?',
+            title: 'Apa anda yakin untuk menghapus data unit ini?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Hapus',
@@ -28,7 +28,7 @@
 
                 $.ajax({
                     type: "delete",
-                    url: `/drugcategory/${id}`,
+                    url: `/unit/${id}`,
                     dataType: "json",
                     success: function (response) {
                         Swal.close();
@@ -64,14 +64,14 @@
             }
         });
 
-        drug_category_id = id;
+        unit_id = id;
 
         $.ajax({
             type: "get",
-            url: `/drugcategory/${drug_category_id}`,
+            url: `/unit/${unit_id}`,
             dataType: "json",
             success: function (response) {
-                $("#drugCategoryNameEdit").val(response.name);
+                $("#unitNameEdit").val(response.name);
 
                 Swal.close();
                 $('#editModal').modal('show');
@@ -95,12 +95,12 @@
                 responsive: true,
                 serverSide: true,
                 ajax: {
-                    url: '/drugcategory/data'
+                    url: '/unit/data'
                 },
                 "columns":
                 [
                     { data: 'DT_RowIndex', orderable: false, searchable: false},
-                    { data: 'name', name:'drug_categories.name'},
+                    { data: 'name', name:'units.name'},
 
                     { data: 'action', orderable: false, searchable: false},
                 ]
@@ -125,7 +125,7 @@
 
             $.ajax({
                 type: "post",
-                url: "/drugcategory",
+                url: "/unit",
                 data: formData,
                 dataType: "json",
                 cache: false,
@@ -169,7 +169,7 @@
 
             $.ajax({
                 type: "post",
-                url: `/drugcategory/${drug_category_id}`,
+                url: `/unit/${unit_id}`,
                 data: formData,
                 dataType: "json",
                 cache: false,

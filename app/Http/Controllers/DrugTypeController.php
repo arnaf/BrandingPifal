@@ -3,25 +3,24 @@
 namespace App\Http\Controllers;
 
 use Exception;
-use App\Models\DrugCategory;
+use App\Models\DrugType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Yajra\DataTables\Facades\DataTables;
 
-class DrugCategoryController extends Controller
+class DrugTypeController extends Controller
 {
-
     public function index()
     {
-        $drugcategory= DB::table('drug_categories')->get();
+        $drugtype= DB::table('drug_categories')->get();
 
         $data = [
             // 'roles'    => $users,
-            'script'   => 'menus.scripts.drugcategory'
+            'script'   => 'menus.scripts.drugtype'
         ];
 
-        return view('menus.drugcategory', $data);
+        return view('menus.drugtype', $data);
 
     }
 
@@ -29,11 +28,11 @@ class DrugCategoryController extends Controller
 
 
         if(is_numeric($id)) {
-            $data = DrugCategory::where('id', $id)->first();
+            $data = DrugType::where('id', $id)->first();
             return Response::json($data);
         }
 
-        $data = DrugCategory::latest('drug_categories.created_at')
+        $data = DrugType::latest('drug_types.created_at')
         ->get();
 
         return DataTables::of($data)
@@ -46,7 +45,7 @@ class DrugCategoryController extends Controller
                         'name' => $row->name,
                     ];
 
-                    return view('layouts.components.buttons.drugcategory', $data);
+                    return view('layouts.components.buttons.drugtype', $data);
                 }
             )
             ->addIndexColumn()
@@ -59,13 +58,13 @@ class DrugCategoryController extends Controller
 
         if($request == NULL) {
             $json = [
-                'msg'       => 'Mohon masukan data kategori obat',
+                'msg'       => 'Mohon masukan data jenis obat',
                 'status'    => false
             ];
 
-        } if($request->drugCategoryName == NULL) {
+        } if($request->drugTypeName == NULL) {
             $json = [
-                'msg'       => 'Mohon masukan data kategori obat',
+                'msg'       => 'Mohon masukan data jenis obat',
                 'status'    => false
             ];
         }
@@ -73,15 +72,15 @@ class DrugCategoryController extends Controller
             try{
 
                 DB::transaction(function() use($request) {
-                    $drugcategory = DrugCategory::create([
-                        'name' => $request->drugCategoryName,
+                    $drugtype = DrugType::create([
+                        'name' => $request->drugTypeName,
                         'created_at'    => date('Y-m-d H:i:s')
                     ]);
 
                 });
 
                 $json = [
-                    'msg' => 'Kategori obat berhasil ditambahkan',
+                    'msg' => 'Jenis obat berhasil ditambahkan',
                     'status' => true
                 ];
             } catch(Exception $e) {
@@ -100,29 +99,29 @@ class DrugCategoryController extends Controller
 
         if($request == NULL) {
             $json = [
-                'msg'       => 'Mohon masukan data kategori obat',
+                'msg'       => 'Mohon masukan data jenis obat',
                 'status'    => false
             ];
 
-        } if($request->drugCategoryNameEdit == NULL) {
+        } if($request->drugTypeNameEdit == NULL) {
             $json = [
-                'msg'       => 'Mohon masukan nama kategori obat',
+                'msg'       => 'Mohon masukan nama jenis obat',
                 'status'    => false
             ];
         } else {
             try{
 
               DB::transaction(function () use ($request, $id) {
-                $oldDrugCategory = DrugCategory::where('id', $id)->first();
+                $oldDrugType = DrugType::where('id', $id)->first();
 
-                $DrugCategory = DrugCategory::where('id', $id)->update([
-                    'name' => $request->drugCategoryNameEdit,
+                $DrugType = DrugType::where('id', $id)->update([
+                    'name' => $request->drugTypeNameEdit,
                     'updated_at'   => date('Y-m-d H:i:s')
                 ]);
             });
 
                 $json = [
-                    'msg' => 'Data kategori obat berhasil diubah',
+                    'msg' => 'Data jenis obat berhasil diubah',
                     'status' => true
                 ];
             } catch(Exception $e) {
@@ -143,11 +142,11 @@ class DrugCategoryController extends Controller
             try{
 
               DB::transaction(function() use($id) {
-                  DB::table('Drug_Categories')->where('id', $id)->delete();
+                  DB::table('Drug_Types')->where('id', $id)->delete();
               });
 
                 $json = [
-                    'msg' => 'Data Kategori obat berhasil dihapus',
+                    'msg' => 'Data Jenis obat berhasil dihapus',
                     'status' => true
                 ];
             } catch(Exception $e) {

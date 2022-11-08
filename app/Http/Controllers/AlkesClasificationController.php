@@ -3,25 +3,24 @@
 namespace App\Http\Controllers;
 
 use Exception;
-use App\Models\DrugCategory;
 use Illuminate\Http\Request;
+use App\Models\AlkesClasification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Yajra\DataTables\Facades\DataTables;
 
-class DrugCategoryController extends Controller
+class AlkesClasificationController extends Controller
 {
-
     public function index()
     {
-        $drugcategory= DB::table('drug_categories')->get();
+        $alkesclasification= DB::table('alkes_clasifications')->get();
 
         $data = [
             // 'roles'    => $users,
-            'script'   => 'menus.scripts.drugcategory'
+            'script'   => 'menus.scripts.alkesclasification'
         ];
 
-        return view('menus.drugcategory', $data);
+        return view('menus.alkesclasification', $data);
 
     }
 
@@ -29,11 +28,11 @@ class DrugCategoryController extends Controller
 
 
         if(is_numeric($id)) {
-            $data = DrugCategory::where('id', $id)->first();
+            $data = AlkesClasification::where('id', $id)->first();
             return Response::json($data);
         }
 
-        $data = DrugCategory::latest('drug_categories.created_at')
+        $data = AlkesClasification::latest('alkes_clasifications.created_at')
         ->get();
 
         return DataTables::of($data)
@@ -46,7 +45,7 @@ class DrugCategoryController extends Controller
                         'name' => $row->name,
                     ];
 
-                    return view('layouts.components.buttons.drugcategory', $data);
+                    return view('layouts.components.buttons.alkesclasification', $data);
                 }
             )
             ->addIndexColumn()
@@ -59,13 +58,13 @@ class DrugCategoryController extends Controller
 
         if($request == NULL) {
             $json = [
-                'msg'       => 'Mohon masukan data kategori obat',
+                'msg'       => 'Mohon masukan data klasifikasi alkes',
                 'status'    => false
             ];
 
-        } if($request->drugCategoryName == NULL) {
+        } if($request->alkesClasificationName == NULL) {
             $json = [
-                'msg'       => 'Mohon masukan data kategori obat',
+                'msg'       => 'Mohon masukan data klasifikasi alkes',
                 'status'    => false
             ];
         }
@@ -73,15 +72,15 @@ class DrugCategoryController extends Controller
             try{
 
                 DB::transaction(function() use($request) {
-                    $drugcategory = DrugCategory::create([
-                        'name' => $request->drugCategoryName,
+                    $alkesclasification = AlkesClasification::create([
+                        'name' => $request->alkesClasificationName,
                         'created_at'    => date('Y-m-d H:i:s')
                     ]);
 
                 });
 
                 $json = [
-                    'msg' => 'Kategori obat berhasil ditambahkan',
+                    'msg' => 'Kategori alkes berhasil ditambahkan',
                     'status' => true
                 ];
             } catch(Exception $e) {
@@ -100,29 +99,29 @@ class DrugCategoryController extends Controller
 
         if($request == NULL) {
             $json = [
-                'msg'       => 'Mohon masukan data kategori obat',
+                'msg'       => 'Mohon masukan data kategori alkes',
                 'status'    => false
             ];
 
-        } if($request->drugCategoryNameEdit == NULL) {
+        } if($request->alkesClasificationNameEdit == NULL) {
             $json = [
-                'msg'       => 'Mohon masukan nama kategori obat',
+                'msg'       => 'Mohon masukan nama kategori alkes',
                 'status'    => false
             ];
         } else {
             try{
 
               DB::transaction(function () use ($request, $id) {
-                $oldDrugCategory = DrugCategory::where('id', $id)->first();
+                $oldAlkesClasification = AlkesClasification::where('id', $id)->first();
 
-                $DrugCategory = DrugCategory::where('id', $id)->update([
-                    'name' => $request->drugCategoryNameEdit,
+                $AlkesClasification = AlkesClasification::where('id', $id)->update([
+                    'name' => $request->alkesClasificationNameEdit,
                     'updated_at'   => date('Y-m-d H:i:s')
                 ]);
             });
 
                 $json = [
-                    'msg' => 'Data kategori obat berhasil diubah',
+                    'msg' => 'Data kategori alkes berhasil diubah',
                     'status' => true
                 ];
             } catch(Exception $e) {
@@ -143,11 +142,11 @@ class DrugCategoryController extends Controller
             try{
 
               DB::transaction(function() use($id) {
-                  DB::table('Drug_Categories')->where('id', $id)->delete();
+                  DB::table('alkes_clasifications')->where('id', $id)->delete();
               });
 
                 $json = [
-                    'msg' => 'Data Kategori obat berhasil dihapus',
+                    'msg' => 'Data klasifikasi alkes berhasil dihapus',
                     'status' => true
                 ];
             } catch(Exception $e) {

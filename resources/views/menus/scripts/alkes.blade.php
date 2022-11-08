@@ -1,5 +1,5 @@
 <script>
-    let drug_category_id;
+    let alkes_id;
 
     const create = () => {
         $('#createForm').trigger('reset');
@@ -8,7 +8,7 @@
 
     const deleteData = (id) => {
         Swal.fire({
-            title: 'Apa anda yakin untuk kategori obat ini?',
+            title: 'Apa anda yakin untuk menghapus data obat ini?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Hapus',
@@ -28,7 +28,7 @@
 
                 $.ajax({
                     type: "delete",
-                    url: `/drugcategory/${id}`,
+                    url: `/alkes/${id}`,
                     dataType: "json",
                     success: function (response) {
                         Swal.close();
@@ -55,6 +55,10 @@
     }
 
     const edit = (id) => {
+
+        var formData = new FormData($("#editForm")[0]);
+
+
         Swal.fire({
             title: 'Mohon tunggu',
             showConfirmButton: false,
@@ -64,14 +68,24 @@
             }
         });
 
-        drug_category_id = id;
+        alkes_id = id;
 
         $.ajax({
             type: "get",
-            url: `/drugcategory/${drug_category_id}`,
+            url: `/alkes/${alkes_id}`,
+            contentType: false,
             dataType: "json",
             success: function (response) {
-                $("#drugCategoryNameEdit").val(response.name);
+                console.log(response)
+                $("#alkesNameEdit").val(response.name);
+                $("#alkesBrandEdit").val(response.brand);
+                $("#alkesClasificationEdit").val(response.alkes_clasification_id);
+                $("#alkesElectroTypeEdit").val(response.electroType);
+                $("#alkesRiskTypeEdit").val(response.riskType);
+                $("#alkesUnitEdit").val(response.unit_id);
+                $("#alkesPriceEdit").val(response.price);
+                // $("#alkesPhotoEdit").val(response.photo);
+                $("#alkesBPJSStatusEdit").val(response.bpjsStatus);
 
                 Swal.close();
                 $('#editModal').modal('show');
@@ -95,13 +109,18 @@
                 responsive: true,
                 serverSide: true,
                 ajax: {
-                    url: '/drugcategory/data'
+                    url: '/alkes/data'
                 },
                 "columns":
                 [
                     { data: 'DT_RowIndex', orderable: false, searchable: false},
-                    { data: 'name', name:'drug_categories.name'},
-
+                    { data: 'name', name:'alkeses.name'},
+                    { data: 'brand', name:'alkeses.brand'},
+                    { data: 'alkesclasification', name:'alkeses.alkes_clasification_id'},
+                    { data: 'electroType', name:'alkeses.electroType'},
+                    { data: 'riskType', name:'alkeses.riskType'},
+                    { data: 'alkesunit', name:'alkeses.unit_id'},
+                    { data: 'bpjsStatus', name:'alkeses.bpjsStatus'},
                     { data: 'action', orderable: false, searchable: false},
                 ]
             });
@@ -109,10 +128,21 @@
 
 
 
+        $('.alkesPrice').keyup(function(event) {
+        if(event.which >= 37 && event.which <= 40) return;
+
+        $(this).val(function(index, value) {
+            return value
+            .replace(/\D/g, "")
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        });
+        });
+
+
         $('#createSubmit').click(function (e) {
             e.preventDefault();
 
-            var formData = $('#createForm').serialize();
+            var formData = new FormData($("#createForm")[0]);
 
             Swal.fire({
                 title: 'Mohon tunggu',
@@ -125,10 +155,11 @@
 
             $.ajax({
                 type: "post",
-                url: "/drugcategory",
+                url: "/alkes",
                 data: formData,
                 dataType: "json",
                 cache: false,
+                contentType: false,
                 processData: false,
                 success: function(data) {
 
@@ -156,7 +187,8 @@
         $('#editSubmit').click(function (e) {
             e.preventDefault();
 
-            var formData = $('#editForm').serialize();
+            var formData = new FormData($("#editForm")[0]);
+
 
             Swal.fire({
                 title: 'Mohon tunggu',
@@ -169,10 +201,11 @@
 
             $.ajax({
                 type: "post",
-                url: `/drugcategory/${drug_category_id}`,
+                url: `/alkes/${alkes_id}`,
                 data: formData,
                 dataType: "json",
                 cache: false,
+                contentType: false,
                 processData: false,
                 success: function(data) {
                     Swal.close();

@@ -1,5 +1,5 @@
 <script>
-    let drug_category_id;
+    let drug_id;
 
     const create = () => {
         $('#createForm').trigger('reset');
@@ -8,7 +8,7 @@
 
     const deleteData = (id) => {
         Swal.fire({
-            title: 'Apa anda yakin untuk kategori obat ini?',
+            title: 'Apa anda yakin untuk menghapus data obat ini?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Hapus',
@@ -28,7 +28,7 @@
 
                 $.ajax({
                     type: "delete",
-                    url: `/drugcategory/${id}`,
+                    url: `/drug/${id}`,
                     dataType: "json",
                     success: function (response) {
                         Swal.close();
@@ -55,6 +55,10 @@
     }
 
     const edit = (id) => {
+
+        var formData = new FormData($("#editForm")[0]);
+
+
         Swal.fire({
             title: 'Mohon tunggu',
             showConfirmButton: false,
@@ -64,14 +68,24 @@
             }
         });
 
-        drug_category_id = id;
+        drug_id = id;
 
         $.ajax({
             type: "get",
-            url: `/drugcategory/${drug_category_id}`,
+            url: `/drug/${drug_id}`,
+            contentType: false,
             dataType: "json",
             success: function (response) {
-                $("#drugCategoryNameEdit").val(response.name);
+                console.log(response)
+                $("#drugNameEdit").val(response.name);
+                $("#drugBrandEdit").val(response.brand);
+                $("#drugCategoryEdit").val(response.drug_category_id);
+                $("#drugPatentStatusEdit").val(response.patentStatus);
+                $("#drugTypeEdit").val(response.drug_type_id);
+                $("#drugUnitEdit").val(response.unit_id);
+                $("#drugPriceEdit").val(response.price);
+                // $("#drugPhotoEdit").val(response.photo);
+                $("#drugBPJSStatusEdit").val(response.bpjsStatus);
 
                 Swal.close();
                 $('#editModal').modal('show');
@@ -95,13 +109,18 @@
                 responsive: true,
                 serverSide: true,
                 ajax: {
-                    url: '/drugcategory/data'
+                    url: '/drug/data'
                 },
                 "columns":
                 [
                     { data: 'DT_RowIndex', orderable: false, searchable: false},
-                    { data: 'name', name:'drug_categories.name'},
-
+                    { data: 'name', name:'drugs.name'},
+                    { data: 'drugcategory', name:'drugs.drug_category_id'},
+                    { data: 'brand', name:'drugs.brand'},
+                    { data: 'drugtype', name:'drugs.drug_type_id'},
+                    { data: 'patentStatus', name:'drugs.patentStatus'},
+                    { data: 'drugunit', name:'drugs.unit_id'},
+                    { data: 'bpjsStatus', name:'drugs.bpjsStatus'},
                     { data: 'action', orderable: false, searchable: false},
                 ]
             });
@@ -109,10 +128,21 @@
 
 
 
+        $('.drugPrice').keyup(function(event) {
+        if(event.which >= 37 && event.which <= 40) return;
+
+        $(this).val(function(index, value) {
+            return value
+            .replace(/\D/g, "")
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        });
+        });
+
+
         $('#createSubmit').click(function (e) {
             e.preventDefault();
 
-            var formData = $('#createForm').serialize();
+            var formData = new FormData($("#createForm")[0]);
 
             Swal.fire({
                 title: 'Mohon tunggu',
@@ -125,10 +155,11 @@
 
             $.ajax({
                 type: "post",
-                url: "/drugcategory",
+                url: "/drug",
                 data: formData,
                 dataType: "json",
                 cache: false,
+                contentType: false,
                 processData: false,
                 success: function(data) {
 
@@ -156,7 +187,8 @@
         $('#editSubmit').click(function (e) {
             e.preventDefault();
 
-            var formData = $('#editForm').serialize();
+            var formData = new FormData($("#editForm")[0]);
+
 
             Swal.fire({
                 title: 'Mohon tunggu',
@@ -169,10 +201,11 @@
 
             $.ajax({
                 type: "post",
-                url: `/drugcategory/${drug_category_id}`,
+                url: `/drug/${drug_id}`,
                 data: formData,
                 dataType: "json",
                 cache: false,
+                contentType: false,
                 processData: false,
                 success: function(data) {
                     Swal.close();
