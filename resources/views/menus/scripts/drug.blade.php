@@ -1,5 +1,6 @@
 <script>
     let drug_id;
+    let drug_detail_id;
 
     const create = () => {
         $('#createForm').trigger('reset');
@@ -76,22 +77,64 @@
             contentType: false,
             dataType: "json",
             success: function (response) {
-                console.log(response)
+                // console.log(response)
                 $("#drugNameEdit").val(response.name);
-                $("#drugBrandEdit").val(response.brand);
+
                 $("#drugCategoryEdit").val(response.drug_category_id);
-                $("#drugPatentStatusEdit").val(response.patentStatus);
+
                 $("#drugTypeEdit").val(response.drug_type_id);
-                $("#drugUnitEdit").val(response.unit_id);
-                $("#drugPriceEdit").val(response.price);
-                // $("#drugPhotoEdit").val(response.photo);
-                $("#drugBPJSStatusEdit").val(response.bpjsStatus);
+
 
                 Swal.close();
                 $('#editModal').modal('show');
             }
         });
     }
+
+
+
+    const detailDrug =  (id) => {
+
+        var formData = new FormData($("#detailDrugForm")[0]);
+
+        Swal.fire({
+            title: 'Mohon tunggu',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            willOpen: () => {
+                Swal.showLoading()
+            }
+        });
+
+        drug_id = id;
+
+        $.ajax({
+            type: "get",
+            url: `/drugdetails/${drug_id}`,
+            contentType: false,
+            dataType: "json",
+            success: function (response) {
+
+                $("#drugUnit").val(response.unit_id);
+                $("#buyPrice").val(response.buyPrice);
+                $("#sellPrice").val(response.sellPrice);
+                $("#drugBPJSStatus").val(response.bpjsStatus);
+                $("#drugPatentStatus").val(response.patentStatus);
+                $("#drugDesc").val(response.desc);
+                $("#drugUsage").val(response.usage);
+                $("#drugDosage").val(response.dosage);
+                $("#unitDesc").val(response.unitDesc);
+                $("#sideEffect").val(response.sideEffect);
+                $("#bpomNum").val(response.bpomNum);
+
+                Swal.close();
+                $('#detailDrugModal').modal('show');
+            }
+        });
+
+    }
+
+
 
     $(function () {
         $.ajaxSetup({
@@ -116,11 +159,7 @@
                     { data: 'DT_RowIndex', orderable: false, searchable: false},
                     { data: 'name', name:'drugs.name'},
                     { data: 'drugcategory', name:'drugs.drug_category_id'},
-                    { data: 'brand', name:'drugs.brand'},
                     { data: 'drugtype', name:'drugs.drug_type_id'},
-                    { data: 'patentStatus', name:'drugs.patentStatus'},
-                    { data: 'drugunit', name:'drugs.unit_id'},
-                    { data: 'bpjsStatus', name:'drugs.bpjsStatus'},
                     { data: 'action', orderable: false, searchable: false},
                 ]
             });
@@ -217,8 +256,57 @@
                             'success'
                         )
 
-                        pengguna_id = null;
+
                         $('#editModal').modal('hide');
+                        $('#table').DataTable().ajax.reload();
+                    } else {
+                        Swal.fire(
+                            'Error!',
+                            data.msg,
+                            'warning'
+                        )
+                    }
+                }
+            })
+        });
+
+
+
+        $('#detailDrugSubmit').click(function (e) {
+            e.preventDefault();
+
+            var formData = new FormData($("#detailDrugForm")[0]);
+
+
+            Swal.fire({
+                title: 'Mohon tunggu',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                willOpen: () => {
+                    Swal.showLoading()
+                }
+            });
+
+            $.ajax({
+                type: "post",
+                url: `/drugdetails/${drug_id}`,
+                data: formData,
+                dataType: "json",
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    Swal.close();
+
+                    if(data.status) {
+                        Swal.fire(
+                            'Success!',
+                            data.msg,
+                            'success'
+                        )
+
+
+                        $('#detailDrugModal').modal('hide');
                         $('#table').DataTable().ajax.reload();
                     } else {
                         Swal.fire(

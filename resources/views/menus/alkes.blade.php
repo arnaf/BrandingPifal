@@ -10,7 +10,7 @@
       <div class="card">
         <div class="card-header">
           <div class="col-sm-6">
-              <h1>Alkes</h1>
+              <h1>Alat Kesehatan</h1>
             </div>
 
           <div class="card-tools">

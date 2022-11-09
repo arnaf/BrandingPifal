@@ -199,8 +199,13 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         //Yajra
         Yajra\DataTables\DataTablesServiceProvider::class,
+        //Import
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+
 
     ],
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -213,8 +218,8 @@ return [
     |
     */
 
-    'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
-    ])->toArray(),
+    'aliases' => [
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+    ],
 
 ];
