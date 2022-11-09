@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Drug extends Model
 {
     protected $fillable = [
-        'name', 'brand', 'price', 'photo', 'bpjsStatus', 'patentStatus', 'stock', 'drug_category_id', 'drug_type_id', 'unit_id'
+        'name', 'drug_category_id', 'drug_type_id'
     ];
 
     protected $hidden = [
-        
+
     ];
 
     public function drugCategory()
@@ -20,15 +20,13 @@ class Drug extends Model
         return $this->belongsTo(DrugCategory::class);
     }
 
-
-    public function unit()
-    {
-        return $this->belongsTo(Unit::class);
-    }
-
-
     public function drugType()
     {
         return $this->belongsTo(DrugType::class);
+    }
+
+    public function drugDetail()
+    {
+        return $this->belongsTo(DrugDetail::class);
     }
 }

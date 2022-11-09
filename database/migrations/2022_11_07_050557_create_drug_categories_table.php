@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('drug_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name'); //Obat bebas, obat bebas terbatas, obat keras, dll
             $table->timestamps();
         });
     }
