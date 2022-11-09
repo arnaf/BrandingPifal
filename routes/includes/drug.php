@@ -3,6 +3,7 @@
     use App\Http\Controllers\DrugCategoryController;
     use App\Http\Controllers\DrugTypeController;
     use App\Http\Controllers\DrugController;
+    use Maatwebsite\Excel\Facades\Excel;
 
         Route::get('/drugcategory/{id}', [DrugCategoryController::class, 'show'])->name('drugcategory');
         Route::get('/drugcategory', [DrugCategoryController::class, 'index'])->name('drugcategory');
@@ -24,4 +25,8 @@
         Route::post('/drug', [DrugController::class, 'store']);
         Route::post('/drug/{id}', [DrugController::class, 'edit']);
         Route::delete('/drug/{id}', [DrugController::class, 'destroy']);
+        Route::get('exportdrug', [DrugController::class, 'export'])->name('exportdrug');
+
+        Route::get('/drugdetails/{id}', [DrugController::class, 'showDetail'])->name('drugdetail');
+        Route::post('/drugdetails/{id}', [DrugController::class, 'detailUpdate'])->name('drugdetail');
 

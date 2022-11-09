@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DrugsExport;
 use Exception;
 use App\Models\Drug;
+use App\Models\DrugDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Response;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -29,6 +32,8 @@ class DrugController extends Controller
     }
 
 
+
+
     public function show($id) {
 
 
@@ -39,10 +44,10 @@ class DrugController extends Controller
 
         $data = DB::table('drugs')
         ->join('drug_categories', 'drugs.drug_category_id', '=', 'drug_categories.id')
-        ->join('units', 'drugs.unit_id', '=', 'units.id')
         ->join('drug_types', 'drugs.drug_type_id', '=', 'drug_types.id')
+        ->join('drug_details', 'drugs.id', '=', 'drug_details.drug_id')
         ->select([
-            'drugs.*', 'drug_categories.name as drugcategory', 'units.name as drugunit', 'drug_types.name as drugtype'
+            'drugs.*', 'drug_categories.name as drugcategory', 'drug_types.name as drugtype'
         ])
         ->orderBy('drugs.id', 'desc');
 
@@ -66,18 +71,32 @@ class DrugController extends Controller
     }
 
 
+    public function showDetail($id) {
+
+
+        if(is_numeric($id)) {
+            $data = DrugDetail::where('drug_id', $id)->first();
+            return Response::json($data);
+        }
+
+        $data = DB::table('drug_details')
+        ->join('drugs', 'drug_details.drug_id', '=', 'drugs.id')
+
+        ->get();
+
+        return view();
+
+    }
+
+
+
+
+
+
     public function store(Request $request)
     {
 
-        if($request->hasFile('drugPhoto')){
-            $extension = $request->file('drugPhoto')->getClientOriginalExtension();
 
-            $gambar = date('YmdHis').'.'.$extension;
-
-            $path = base_path('public/photos/drugs');
-
-            $request->file('drugPhoto')->move($path, $gambar);
-        }
 
         if($request == NULL) {
             $json = [
@@ -90,19 +109,9 @@ class DrugController extends Controller
                 'msg'       => 'Mohon masukan nama obat',
                 'status'    => false
             ];
-        } elseif($request->drugBrand == NULL){
-            $json = [
-                'msg'       => 'Mohon masukan merk dagang obat',
-                'status'    => false
-            ];
         } elseif($request->drugCategory == NULL){
             $json = [
                 'msg'       => 'Mohon masukan kategori obat',
-                'status'    => false
-            ];
-        } elseif($request->drugPatentStatus == NULL){
-            $json = [
-                'msg'       => 'Mohon masukan status paten obat',
                 'status'    => false
             ];
         } elseif($request->drugType == NULL){
@@ -110,43 +119,25 @@ class DrugController extends Controller
                 'msg'       => 'Mohon masukan data tipe/jenis obat',
                 'status'    => false
             ];
-        } elseif($request->drugUnit == NULL){
-            $json = [
-                'msg'       => 'Mohon masukan satuan obat',
-                'status'    => false
-            ];
-        } elseif($request->drugPrice == NULL){
-            $json = [
-                'msg'       => 'Mohon masukan harga obat',
-                'status'    => false
-            ];
-        } elseif($request->drugPhoto == NULL){
-            $json = [
-                'msg'       => 'Mohon masukan foto obat',
-                'status'    => false
-            ];
-        } elseif($request->drugBPJSStatus == NULL){
-            $json = [
-                'msg'       => 'Mohon masukan status BPJS obat',
-                'status'    => false
-            ];
         }
         else {
             try{
 
-                DB::transaction(function() use($request, $gambar) {
+                DB::transaction(function() use($request) {
                     $drugCreate = Drug::create([
                         'name'              => $request->drugName,
-                        'brand'             => $request->drugBrand,
+
                         'drug_category_id'  => $request->drugCategory,
-                        'patentStatus'      => $request->drugPatentStatus,
+
                         'drug_type_id'      => $request->drugType,
-                        'unit_id'           => $request->drugUnit,
-                        'price'             => $request->drugPrice,
-                        'photo'             => $gambar,
-                        'bpjsStatus'        => $request->drugBPJSStatus,
-                        'stock'             => 0,
+
                         'created_at'        => date('Y-m-d H:i:s')
+                    ]);
+
+                    $drugDetail = DrugDetail::create([
+                        'drug_id'           => $drugCreate->id,
+                        'created_at'        => date('Y-m-d H:i:s')
+
                     ]);
 
                 });
@@ -170,21 +161,7 @@ class DrugController extends Controller
 
     public function edit(Request $request, $id)
     {
-        if($request->hasFile('drugPhotoEdit')){
 
-            $drug = Drug::find($id);
-            $image_path = public_path("photos/drugs/{$drug->photo}");
-            unlink($image_path);
-            
-        $extension = $request->file('drugPhotoEdit')->getClientOriginalExtension();
-
-        $drugPhotoEdit = date('YmdHis').'.'.$extension;
-
-        $path = base_path('public/photos/drugs');
-
-        $request->file('drugPhotoEdit')->move($path, $drugPhotoEdit);
-
-        }
         if($request == NULL) {
             $json = [
                 'msg'       => 'Mohon masukan data obat',
@@ -196,19 +173,9 @@ class DrugController extends Controller
                 'msg'       => 'Mohon masukan nama obat',
                 'status'    => false
             ];
-        } elseif($request->drugBrandEdit == NULL){
-            $json = [
-                'msg'       => 'Mohon masukan merk dagang obat',
-                'status'    => false
-            ];
         } elseif($request->drugCategoryEdit == NULL){
             $json = [
                 'msg'       => 'Mohon masukan kategori obat',
-                'status'    => false
-            ];
-        } elseif($request->drugPatentStatusEdit == NULL){
-            $json = [
-                'msg'       => 'Mohon masukan status paten obat',
                 'status'    => false
             ];
         } elseif($request->drugTypeEdit == NULL){
@@ -216,31 +183,11 @@ class DrugController extends Controller
                 'msg'       => 'Mohon masukan data tipe/jenis obat',
                 'status'    => false
             ];
-        } elseif($request->drugUnitEdit == NULL){
-            $json = [
-                'msg'       => 'Mohon masukan satuan obat',
-                'status'    => false
-            ];
-        } elseif($request->drugPriceEdit == NULL){
-            $json = [
-                'msg'       => 'Mohon masukan harga obat',
-                'status'    => false
-            ];
-        } elseif($request->drugPhotoEdit == NULL){
-            $json = [
-                'msg'       => 'Mohon masukan foto obat',
-                'status'    => false
-            ];
-        } elseif($request->drugBPJSStatusEdit == NULL){
-            $json = [
-                'msg'       => 'Mohon masukan status BPJS obat',
-                'status'    => false
-            ];
         }
             else {
             try{
 
-              DB::transaction(function () use ($request, $id, $drugPhotoEdit) {
+              DB::transaction(function () use ($request, $id) {
                 // $oldKelas = User::where('id', $id)->first();
 
                 // $oldUser->roles()->detach();
@@ -248,14 +195,8 @@ class DrugController extends Controller
 
                 $drugUpdate = Drug::where('id', $id)->update([
                     'name'              => $request->drugNameEdit,
-                    'brand'             => $request->drugBrandEdit,
                     'drug_category_id'  => $request->drugCategoryEdit,
-                    'patentStatus'      => $request->drugPatentStatusEdit,
                     'drug_type_id'      => $request->drugTypeEdit,
-                    'unit_id'           => $request->drugUnitEdit,
-                    'price'             => $request->drugPriceEdit,
-                    'photo'             => $drugPhotoEdit,
-                    'bpjsStatus'        => $request->drugBPJSStatusEdit,
                     'updated_at'        => date('Y-m-d H:i:s')
                 ]);
 
@@ -277,11 +218,154 @@ class DrugController extends Controller
         return Response::json($json);
     }
 
+
+    public function detailUpdate(Request $request, $id)
+    {
+
+        //  //$drug = DrugDetail::find($id);
+        //  $drug = DrugDetail::where('drug_id','=',$id)->first();
+
+        //  $image_path = public_path("photos/drugs/{$drug->photo}");
+        //  unlink($image_path);
+
+
+        if($request->has('drugPhoto')){
+            $drugDetail = DrugDetail::where('drug_id','=',$id)->first();
+            $oldImage = $drugDetail->photo;
+
+            if($oldImage){
+                $pleaseRemove = base_path('public/photos/drugs/').$oldImage;
+
+                if(file_exists($pleaseRemove)) {
+                    unlink($pleaseRemove);
+                }
+            }
+
+
+        $extension = $request->file('drugPhoto')->getClientOriginalExtension();
+
+        $drugPhoto = date('YmdHis').'.'.$extension;
+
+        $path = base_path('public/photos/drugs');
+
+        $request->file('drugPhoto')->move($path, $drugPhoto);
+
+        } if($request->drugUnit == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan satuan obat',
+                'status'    => false
+            ];
+        } elseif($request->sellPrice == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan harga jual obat',
+                'status'    => false
+            ];
+        } elseif($request->buyPrice == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan harga beli obat',
+                'status'    => false
+            ];
+        } elseif($request->drugPhoto == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan foto obat',
+                'status'    => false
+            ];
+        } elseif($request->drugBPJSStatus == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan status BPJS obat',
+                'status'    => false
+            ];
+        } elseif($request->drugPatentStatus == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan status paten obat',
+                'status'    => false
+            ];
+        } elseif($request->drugDesc == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan deskripsi obat',
+                'status'    => false
+            ];
+        }   elseif($request->drugUsage == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan manfaat obat',
+                'status'    => false
+            ];
+        }   elseif($request->drugDosage == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan dosis obat',
+                'status'    => false
+            ];
+        }   elseif($request->unitDesc == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan deskripsi satuan kemasan obat',
+                'status'    => false
+            ];
+        }   elseif($request->sideEffect == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan efek samping obat',
+                'status'    => false
+            ];
+        } elseif($request->bpomNum == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan nomor registrasi BPOM obat',
+                'status'    => false
+            ];
+        } else {
+            try{
+
+              DB::transaction(function () use ($request, $id, $drugPhoto) {
+                // $oldKelas = User::where('id', $id)->first();
+
+                // $oldUser->roles()->detach();
+
+                $drugdetail = DrugDetail::where('drug_id', $id)->update([
+                    'unit_id'      => $request->drugUnit,
+                    'buyPrice'  => $request->buyPrice,
+                    'sellPrice'      => $request->sellPrice,
+                    'bpjsStatus'      => $request->drugBPJSStatus,
+                    'patentStatus'      => $request->drugPatentStatus,
+                    'desc'      => $request->drugDesc,
+                    'usage'      => $request->drugUsage,
+                    'dosage'      => $request->drugDosage,
+                    'unitDesc'      => $request->unitDesc,
+                    'sideEffect'      => $request->sideEffect,
+                    'bpomNum'      => $request->bpomNum,
+                    'photo'      => $drugPhoto,
+                    'updated_at'        => date('Y-m-d H:i:s')
+                ]);
+
+            });
+
+                $json = [
+                    'msg' => 'Data detail obat berhasil diubah',
+                    'status' => true
+                ];
+            } catch(Exception $e) {
+                $json = [
+                    'msg'       => 'error',
+                    'status'    => false,
+                    'e'         => $e
+                ];
+            }
+        }
+
+        return Response::json($json);
+    }
+
+
     public function destroy($id)
     {
-        $drug = Drug::find($id);
-        $image_path = public_path("photos/drugs/{$drug->photo}");
-        unlink($image_path);
+
+            $drugDetail = DrugDetail::where('drug_id','=',$id)->first();
+            $oldImage = $drugDetail->photo;
+
+            if($oldImage){
+                $pleaseRemove = base_path('public/photos/drugs/').$oldImage;
+
+                if(file_exists($pleaseRemove)) {
+                    unlink($pleaseRemove);
+                }
+            }
             try{
 
               DB::transaction(function() use($id) {
@@ -304,4 +388,14 @@ class DrugController extends Controller
         return Response::json($json);
     }
 
+
+
+
+
+    public function export()
+    {
+        return Excel::download(new DrugsExport, 'drugs.xlsx');
+    }
 }
+
+

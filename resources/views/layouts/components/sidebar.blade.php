@@ -15,7 +15,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="">
-          <i class="bi bi-journal-text"></i><span>Pendaftaran Bimbel</span>
+          <i class="bi bi-cash-stack"></i><span>Pembelian</span>
         </a>
       </li><!-- End Forms Nav -->
 
@@ -124,6 +124,14 @@
                 <li>
                     <a href="{{ url('/alkes') }}">
                       <i class="bi bi-circle"></i><span>Alkes</span>
+                    </a>
+                </li>
+
+
+
+                <li>
+                    <a href="">
+                      <i class="bi bi-circle"></i><span>Supplier</span>
                     </a>
                 </li>
 
