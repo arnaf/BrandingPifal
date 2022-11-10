@@ -39,7 +39,7 @@ class ProductController extends Controller
         ->join('stoks', 'drugs.id', '=', 'stoks.drug_id')
         ->select([
             'drugs.*','drug_details.desc','drug_details.photo as image',
-            'drug_details.sellprice as price', 'drug_categories.name as nama_kategori','stoks.current_stok as quantity'
+            'drugs.sellprice as SellPrice', 'drug_categories.name as nama_kategori','stoks.current_stok as quantity'
         ])
         ->orderBy('drugs.id', 'desc');
 

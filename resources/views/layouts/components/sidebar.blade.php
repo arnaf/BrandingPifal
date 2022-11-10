@@ -25,16 +25,16 @@
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="">
-          <i class="bi bi-credit-card"></i><span>Tagihan</span>
+        <a class="nav-link collapsed" href="{{ url('/cart') }}">
+          <i class="bi bi-credit-card"></i><span>KASIR</span>
         </a>
       </li><!-- End Tables Nav -->
 
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="">
-          <i class="bi bi-credit-card"></i><span>Tagihan Saya</span>
+        <a class="nav-link collapsed" href="{{ url('admin/penjualans') }}">
+          <i class="bi bi-credit-card"></i><span>Penjualan</span>
         </a>
       </li><!-- End Tables Nav -->
 
@@ -108,34 +108,41 @@
                       <i class="bi bi-circle"></i><span>Unit</span>
                     </a>
                 </li>
-
                 <li>
                     <a href="{{ url('/drugtype') }}">
                       <i class="bi bi-circle"></i><span>Jenis Obat</span>
                     </a>
                 </li>
-
                 <li>
                     <a href="{{ url('/drug') }}">
                       <i class="bi bi-circle"></i><span>Obat</span>
                     </a>
                 </li>
-
                 <li>
                     <a href="{{ url('/alkes') }}">
                       <i class="bi bi-circle"></i><span>Alkes</span>
                     </a>
                 </li>
-
-
-
                 <li>
                     <a href="">
                       <i class="bi bi-circle"></i><span>Supplier</span>
                     </a>
                 </li>
+            </ul>
+          </li>
 
 
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#user-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-journals"></i><span>Management User</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="user-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+
+                <li>
+                    <a href="{{ url('/role') }}">
+                      <i class="bi bi-circle"></i><span>Role</span>
+                    </a>
+                </li>
             </ul>
           </li>
 

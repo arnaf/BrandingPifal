@@ -52,9 +52,9 @@ class PenjualanController extends Controller
     $penjualan = Penjualan::select('*')
                 ->where('id', '=', $id)
                 ->get();
-    $detail = PenjualanItem::leftJoin('products', 'products.id', '=', 'penjualan_items.drug_id')
+    $detail = PenjualanItem::leftJoin('drugs', 'drugs.id', '=', 'penjualan_items.drug_id')
     ->select([
-        'penjualan_items.quantity as pcs','penjualan_items.price as harga','products.*'
+        'penjualan_items.quantity as pcs','penjualan_items.price as harga','drugs.*'
     ])
     ->where('penjualan_id', '=', $id)
     ->get();
@@ -68,7 +68,7 @@ class PenjualanController extends Controller
                 ->get();
 
     $totals = DB::table('penjualan_items')
-                ->join('products', 'products.id', '=', 'penjualan_items.drug_id')
+                ->join('drugs', 'drugs.id', '=', 'penjualan_items.drug_id')
                 ->select(DB::raw('SUM(penjualan_items.price) as totalharga'))
                 ->groupBy('penjualan_id')
                 ->where('penjualan_items.penjualan_id', '=', $id)
@@ -154,7 +154,7 @@ class PenjualanController extends Controller
         foreach ($cart as $item) {
 
             $penjualan->items()->create([
-                'price' => $item->SellPrice * $item->pivot->quantity,
+                'price' => $item->sellPrice * $item->pivot->quantity,
                 'quantity' => $item->pivot->quantity,
                 'drug_id' => $item->id,
             ]);
