@@ -26,7 +26,7 @@
 
                   <thead>
                       <th>#</th>
-                      <th>Foto</th>
+              
                       <th>Nama</th>
                       <th>Nomor Pegawai</th>
                       <th>Tanggal Lahir</th>
@@ -44,8 +44,8 @@
           </div>
         </div>
       </div>
-      @include('menus.modals.cashiers.create')
-      @include('menus.modals.cashiers.edit')
+      @include('menus.modals.users.cashier.create')
+      @include('menus.modals.users.cashier.edit')
 
       <!-- /.card -->
 

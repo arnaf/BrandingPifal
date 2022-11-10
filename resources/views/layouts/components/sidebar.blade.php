@@ -123,6 +123,15 @@
                       <i class="bi bi-circle"></i><span>Alkes</span>
                     </a>
                 </li>
+
+
+
+                <li>
+                    <a href="{{ url('/cashier') }}">
+                      <i class="bi bi-circle"></i><span>Cashier</span>
+                    </a>
+                </li>
+
                 <li>
                     <a href="">
                       <i class="bi bi-circle"></i><span>Supplier</span>

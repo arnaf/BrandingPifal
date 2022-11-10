@@ -3,7 +3,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Tambah Member</h5>
+            <h5 class="modal-title">Tambah Data Kasir</h5>
 
           </div>
           <div class="modal-body">
@@ -22,44 +22,68 @@
                   <span class="text-danger">{{$message}}</span>
                 @enderror
             </div>
+
+
+
+
+
+
+            {{-- <div class="form-group mt-3 mb-3">
+                <label for="photo">Foto</label>
+                 <input type="file" class="form-control" required data-allowed-file-extensions="jpg png"  data-max-file-size-preview="3M" id="photo"  name="photo">
+                  @error('photo')
+                 <span class="text-danger">{{$message}}</span>
+                  @enderror
+              </div> --}}
+
             <div class="form-group mt-3 mb-3">
-                <label for="nama">Nama</label>
-                <input type="text" class="form-control" id="nama" name="nama">
-                @error('nama')
+                <label for="name">Nama</label>
+                <input type="text" class="form-control" id="name" name="name">
+                @error('name')
                   <span class="text-danger">{{$message}}</span>
                 @enderror
             </div>
+
             <div class="form-group mt-3 mb-3">
-                <label for="tgl_lhr">Tanggal Lahir</label>
-                <input type="date" class="form-control" id="tgl_lhr" name="tgl_lhr">
-                @error('tgl_lhr')
+                <label for="employeeId">ID Karyawan</label>
+                <input type="text" class="form-control" id="employeeId" name="employeeId" required>
+                @error('employeeId')
                   <span class="text-danger">{{$message}}</span>
                 @enderror
             </div>
+
             <div class="form-group mt-3 mb-3">
-                <label for="tmp_lhr">Tempat Lahir</label>
-                <input type="text" class="form-control" id="tmp_lhr" name="tmp_lhr" required>
-                @error('tmp_lhr')
+                <label for="dateBirth">Tanggal Lahir</label>
+                <input type="date" class="form-control" id="dateBirth" name="dateBirth">
+                @error('dateBirth')
                   <span class="text-danger">{{$message}}</span>
                 @enderror
             </div>
+
             <div class="form-group mt-3 mb-3">
-                <label for="alamat">Alamat</label>
-                <input type="text" class="form-control" id="alamat" name="alamat">
-                @error('alamat')
+                <label for="phone">Nomor Telepon</label>
+                <input type="text" class="form-control" id="phone" name="phone">
+                @error('phone')
                   <span class="text-danger">{{$message}}</span>
                 @enderror
             </div>
+
             <div class="form-group mt-3 mb-3">
-                <label for="pendidikan"> Pendidikan </label>
-                <select name="pendidikan" id="pendidikan" class="form-control">
-                    <option selected="" disabled>Pilih Pendidikan</option>
-                        <option value="SD">SD</option>
-                        <option value="SMP">SMP</option>
-                        <option value="SMA">SMA</option>
-                        <option value="Kuliah">Kuliah</option>
+                <label for="address">Alamat</label>
+                <input type="text" class="form-control" id="address" name="address">
+                @error('address')
+                  <span class="text-danger">{{$message}}</span>
+                @enderror
+            </div>
+
+            <div class="form-group mt-3 mb-3">
+                <label for="status"> Status Keaktifan </label>
+                <select name="status" id="status" class="form-control">
+                    <option selected="" disabled>Pilih Status Keaktifan</option>
+                        <option value="Aktif">Aktif</option>
+                        <option value="Nonaktif">Nonaktif</option>
                 </select>
-                @error('pendidikan')
+                @error('status')
                   <span class="text-danger">{{$message}}</span>
                 @enderror
             </div>

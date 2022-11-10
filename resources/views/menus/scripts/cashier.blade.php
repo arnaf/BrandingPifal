@@ -1,5 +1,5 @@
 <script>
-    let user_id;
+    let cashier_id;
 
     const create = () => {
         $('#createForm').trigger('reset');
@@ -8,7 +8,7 @@
 
     const deleteData = (id) => {
         Swal.fire({
-            title: 'Apa anda yakin untuk menghapus pengguna ini?',
+            title: 'Apa anda yakin untuk menghapus data kasir ini?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Hapus',
@@ -28,7 +28,7 @@
 
                 $.ajax({
                     type: "delete",
-                    url: `/user/${id}`,
+                    url: `/cashier/${id}`,
                     dataType: "json",
                     success: function (response) {
                         Swal.close();
@@ -64,20 +64,19 @@
             }
         });
 
-        user_id = id;
+        cashier_id = id;
 
         $.ajax({
             type: "get",
-            url: `/user/${user_id}`,
+            url: `/cashier/${cashier_id}`,
             dataType: "json",
             success: function (response) {
-                $("#namaEdit").val(response.nama);
-                $("#passwordEdit").val(response.password);
-                $("#tgl_lhrEdit").val(response.tgl_lhr);
-                $("#tmp_lhrEdit").val(response.tmp_lhr);
-                $("#alamatEdit").val(response.alamat);
-                $("#pendidikanEdit").val(response.pendidikan);
-
+                $("#nameEdit").val(response.name);
+                $("#employeeIdEdit").val(response.employeeId);
+                $("#dateBirthEdit").val(response.dateBirth);
+                $("#phoneEdit").val(response.phone);
+                $("#addressEdit").val(response.address);
+                $("#statusEdit").val(response.status);
                 Swal.close();
                 $('#editModal').modal('show');
             }
@@ -100,16 +99,18 @@
                 responsive: true,
                 serverSide: true,
                 ajax: {
-                    url: '/user/kumahaaingwe'
+                    url: '/cashier/kumahaaingwe'
                 },
                 "columns":
                 [
                     { data: 'DT_RowIndex', orderable: false, searchable: false},
-                    { data: 'nama', name:'users.nama'},
-                    { data: 'tgl_lhr', name:'users.tgl_lhr'},
-                    { data: 'tmp_lhr', name:'users.tmp_lhr'},
-                    { data: 'alamat', name:'users.alamat'},
-                    { data: 'pendidikan', name:'users.pendidikan'},
+
+                    { data: 'name', name:'cashiers.name'},
+                    { data: 'employeeId', name:'cashiers.employeeId'},
+                    { data: 'dateBirth', name:'cashiers.dateBirth'},
+                    { data: 'phone', name:'cashiers.phone'},
+                    { data: 'address', name:'cashiers.address'},
+                    { data: 'status', name:'cashiers.status'},
                     { data: 'action', orderable: false, searchable: false},
                 ]
             });
@@ -120,7 +121,7 @@
         $('#createSubmit').click(function (e) {
             e.preventDefault();
 
-            var formData = $('#createForm').serialize();
+            var formData = new FormData($("#createForm")[0]);
 
             Swal.fire({
                 title: 'Mohon tunggu',
@@ -133,10 +134,11 @@
 
             $.ajax({
                 type: "post",
-                url: "/user",
+                url: "/cashier",
                 data: formData,
                 dataType: "json",
                 cache: false,
+                contentType: false,
                 processData: false,
                 success: function(data) {
 
@@ -177,10 +179,11 @@
 
             $.ajax({
                 type: "post",
-                url: `/user/${user_id}`,
+                url: `/cashier/${cashier_id}`,
                 data: formData,
                 dataType: "json",
                 cache: false,
+      
                 processData: false,
                 success: function(data) {
                     Swal.close();

@@ -21,6 +21,7 @@ require_once('includes/auth.php');
 require_once('includes/drug.php');
 require_once('includes/alkes.php');
 require_once('includes/unit.php');
+require_once('includes/cashier.php');
 
 
 

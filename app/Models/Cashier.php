@@ -9,15 +9,15 @@ class Cashier extends Model
 {
     protected $fillable = [
         'name',
-        'photo',
+      
         'address',
         'dateBirth',
         'status',
         'phone',
         'employeeId',
+        'user_id'
     ];
 
     protected $hidden = [
-        'user_id'
     ];
 }
