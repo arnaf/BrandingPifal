@@ -21,6 +21,16 @@ class RoleSeeder extends Seeder
             'guard_name' => 'web'
         ]);
 
+        Permission::create([
+            'name' => 'Data Master',
+        ]);
+
+
+
+
+
+        $SU->givePermissionTo('Data Master');
+
 
         $doctor = Role::create([
             'name' => 'doctor',
@@ -33,12 +43,6 @@ class RoleSeeder extends Seeder
             'guard_name' => 'web'
         ]);
 
-
-        $patient = Role::create([
-            'name' => 'patient',
-            'guard_name' => 'web'
-        ]);
-
         Permission::create([
             'name' => 'penjualan',
         ]);
@@ -48,16 +52,20 @@ class RoleSeeder extends Seeder
             'name' => 'kasir',
         ]);
 
-        Permission::create([
-            'name' => 'Data Master',
+        $cashier->givePermissionTo('penjualan');
+        $cashier->givePermissionTo('kasir');
+
+
+
+
+        $patient = Role::create([
+            'name' => 'patient',
+            'guard_name' => 'web'
         ]);
 
 
 
 
-        $cashier->givePermissionTo('penjualan');
-        $cashier->givePermissionTo('kasir');
-        $SU->givePermissionTo('Data Master');
 
 
 

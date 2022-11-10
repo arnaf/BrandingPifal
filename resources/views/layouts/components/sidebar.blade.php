@@ -13,17 +13,13 @@
 
 
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="">
-          <i class="bi bi-cash-stack"></i><span>Pembelian</span>
-        </a>
-      </li><!-- End Forms Nav -->
+      <!-- End Forms Nav -->
 
 
 
 
 
-
+      @can('kasir')
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ url('/cart') }}">
           <i class="bi bi-credit-card"></i><span>KASIR</span>
@@ -38,10 +34,16 @@
         </a>
       </li><!-- End Tables Nav -->
 
+      {{-- <li class="nav-item">
+        <a class="nav-link collapsed" href="">
+          <i class="bi bi-cash-stack"></i><span>Pembelian</span>
+        </a>
+      </li> --}}
 
 
 
-      <li class="nav-item">
+
+      {{-- <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-clock-history"></i><span>Riwayat Pembayaran</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -80,12 +82,16 @@
             </a>
           </li>
         </ul>
-      </li>
+      </li>--}}
+      @endcan
+
 
 
       <!-- End Charts Nav -->
 
            <!-- End Icons Nav -->
+
+    @can('Data Master')
 
 
         <li class="nav-item">
@@ -126,11 +132,7 @@
 
 
 
-                <li>
-                    <a href="{{ url('/cashier') }}">
-                      <i class="bi bi-circle"></i><span>Cashier</span>
-                    </a>
-                </li>
+
 
                 <li>
                     <a href="">
@@ -152,8 +154,16 @@
                       <i class="bi bi-circle"></i><span>Role</span>
                     </a>
                 </li>
+
+                <li>
+                    <a href="{{ url('/cashier') }}">
+                      <i class="bi bi-circle"></i><span>Cashier</span>
+                    </a>
+                </li>
             </ul>
           </li>
+
+    @endcan
 
 
 
