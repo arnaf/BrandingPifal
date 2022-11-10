@@ -13,7 +13,7 @@ class Doctor extends Model
         'specialist',
         'address',
         'phone',
-        'employee_id'
+        'user_id'
     ];
 
     protected $hidden = [
