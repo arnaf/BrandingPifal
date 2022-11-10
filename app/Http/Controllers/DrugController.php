@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\DrugsExport;
 use Exception;
 use App\Models\Drug;
 use App\Models\DrugDetail;
+use App\Exports\DrugsExport;
+use App\Imports\DrugsImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -109,6 +110,16 @@ class DrugController extends Controller
                 'msg'       => 'Mohon masukan nama obat',
                 'status'    => false
             ];
+        } elseif($request->sellPrice == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan harga jual obat',
+                'status'    => false
+            ];
+        } elseif($request->buyPrice == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan harga beli obat',
+                'status'    => false
+            ];
         } elseif($request->drugCategory == NULL){
             $json = [
                 'msg'       => 'Mohon masukan kategori obat',
@@ -117,6 +128,11 @@ class DrugController extends Controller
         } elseif($request->drugType == NULL){
             $json = [
                 'msg'       => 'Mohon masukan data tipe/jenis obat',
+                'status'    => false
+            ];
+        } elseif($request->barcode == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan barcode obat',
                 'status'    => false
             ];
         }
@@ -173,6 +189,16 @@ class DrugController extends Controller
                 'msg'       => 'Mohon masukan nama obat',
                 'status'    => false
             ];
+        } elseif($request->sellPriceEdit == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan harga jual obat',
+                'status'    => false
+            ];
+        } elseif($request->buyPriceEdit == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan harga beli obat',
+                'status'    => false
+            ];
         } elseif($request->drugCategoryEdit == NULL){
             $json = [
                 'msg'       => 'Mohon masukan kategori obat',
@@ -181,6 +207,11 @@ class DrugController extends Controller
         } elseif($request->drugTypeEdit == NULL){
             $json = [
                 'msg'       => 'Mohon masukan data tipe/jenis obat',
+                'status'    => false
+            ];
+        } elseif($request->barcodeEdit == NULL){
+            $json = [
+                'msg'       => 'Mohon masukan barcode obat',
                 'status'    => false
             ];
         }
@@ -195,6 +226,9 @@ class DrugController extends Controller
 
                 $drugUpdate = Drug::where('id', $id)->update([
                     'name'              => $request->drugNameEdit,
+                    'buyPrice'          => $request->buyPriceEdit,
+                    'sellPrice'         => $request->sellPriceEdit,
+                    'barcode'           => $request->barcodeEdit,
                     'drug_category_id'  => $request->drugCategoryEdit,
                     'drug_type_id'      => $request->drugTypeEdit,
                     'updated_at'        => date('Y-m-d H:i:s')
@@ -255,16 +289,6 @@ class DrugController extends Controller
                 'msg'       => 'Mohon masukan satuan obat',
                 'status'    => false
             ];
-        } elseif($request->sellPrice == NULL){
-            $json = [
-                'msg'       => 'Mohon masukan harga jual obat',
-                'status'    => false
-            ];
-        } elseif($request->buyPrice == NULL){
-            $json = [
-                'msg'       => 'Mohon masukan harga beli obat',
-                'status'    => false
-            ];
         } elseif($request->drugPhoto == NULL){
             $json = [
                 'msg'       => 'Mohon masukan foto obat',
@@ -320,8 +344,7 @@ class DrugController extends Controller
 
                 $drugdetail = DrugDetail::where('drug_id', $id)->update([
                     'unit_id'      => $request->drugUnit,
-                    'buyPrice'  => $request->buyPrice,
-                    'sellPrice'      => $request->sellPrice,
+
                     'bpjsStatus'      => $request->drugBPJSStatus,
                     'patentStatus'      => $request->drugPatentStatus,
                     'desc'      => $request->drugDesc,
@@ -395,6 +418,15 @@ class DrugController extends Controller
     public function export()
     {
         return Excel::download(new DrugsExport, 'drugs.xlsx');
+    }
+
+
+
+    public function import()
+    {
+        Excel::import(new DrugsImport,request()->file('drugimport'));
+        return back();
+
     }
 }
 

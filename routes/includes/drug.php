@@ -26,6 +26,7 @@
         Route::post('/drug/{id}', [DrugController::class, 'edit']);
         Route::delete('/drug/{id}', [DrugController::class, 'destroy']);
         Route::get('exportdrug', [DrugController::class, 'export'])->name('exportdrug');
+        Route::post('importdrug', [DrugController::class, 'import'])->name('importdrug');
 
         Route::get('/drugdetails/{id}', [DrugController::class, 'showDetail'])->name('drugdetail');
         Route::post('/drugdetails/{id}', [DrugController::class, 'detailUpdate'])->name('drugdetail');

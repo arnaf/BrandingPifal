@@ -24,22 +24,7 @@
 
 
 
-                  <div class="form-group mt-3 mb-3">
-                      <label for="buyPrice">Harga Beli</label>
-                        <input type="number" class="form-control" id="buyPrice" name="buyPrice">
-                            @error('buyPrice')
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
-                  </div>
-
-                  <div class="form-group mt-3 mb-3">
-                    <label for="sellPrice">Harga Jual</label>
-                      <input type="number" class="form-control" id="sellPrice" name="sellPrice">
-                          @error('sellPrice')
-                          <span class="text-danger">{{$message}}</span>
-                          @enderror
-                </div>
-
+                  
 
                   <div class="form-group mt-3 mb-3">
                     <label for="drugPhoto">Foto</label>

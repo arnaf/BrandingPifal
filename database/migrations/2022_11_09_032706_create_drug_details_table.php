@@ -18,8 +18,6 @@ return new class extends Migration
             $table->foreignId('drug_id');
             $table->foreignId('unit_id')->nullable();
 
-            $table->decimal('buyPrice', 14, 2)->nullable();
-            $table->decimal('sellPrice', 14, 2)->nullable();
             $table->text('photo')->nullable();
             $table->string('bpjsStatus')->nullable();
             $table->string('patentStatus')->nullable();
