@@ -136,7 +136,7 @@ class CashierController extends Controller
         else {
             try{
 
-                DB::transaction(function() use($request) {
+                DB::transaction(function() use($request, $cashierPhoto) {
                     $cashier = Cashier::create([
                         'photo'         => $cashierPhoto,
                         'name'      => $request->name,
