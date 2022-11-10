@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\CartController;
 /*
@@ -48,6 +49,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/cart/change-qty', [CartController::class, 'changeQty']);
     Route::delete('/cart/delete', [CartController::class, 'delete']);
     Route::delete('/cart/empty', [CartController::class, 'empty']);
+    Route::resource('penjualans', PenjualanController::class);
 
 
 

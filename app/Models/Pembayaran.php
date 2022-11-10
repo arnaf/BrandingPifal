@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Kategori extends Model
-
+class Pembayaran extends Model
 {
     protected $fillable = [
-        'name'
+        'amount',
+        'penjualan_id',
+        'user_id',
     ];
-    protected $table = 'drug_categories';
 }

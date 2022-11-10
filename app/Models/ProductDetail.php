@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class ProductDetail extends Model
 {
     protected $fillable = [
         'name'
@@ -12,7 +12,7 @@ class Product extends Model
 
     ];
 
-    protected $table = 'drugs';
+    protected $table = 'drug_details';
 
 
     public function kategori() {
@@ -27,11 +27,6 @@ class Product extends Model
     public function stoks()
     {
         return $this->hasMany(Stok::class);
-    }
-
-    public function detail()
-    {
-        return $this->hasOne(ProductDetail::class, 'drug_id' );
     }
 
 

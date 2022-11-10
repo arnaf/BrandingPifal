@@ -23,49 +23,46 @@ class ProductController extends Controller
     {
 
 
-        $detail = Product::Join('kategoris', 'products.kategori_id', '=', 'kategoris.id')
+        $detail = Product::Join('drug_categories', 'drugs.drug_category_id', '=', 'drug_categories.id')
         ->select([
-            'products.*', 'kategoris.name as nama_kategori'
+            'drugs.*', 'drug_categories.name as nama_kategori'
         ])
 
         ->get();
 
 
-        //$products = new Product();
-        // $products = Product::Join('kategoris', 'products.kategori_id', '=', 'kategoris.id')
-        // ->select([
-        //     'products.*', 'kategoris.name as nama_kategori'
-        // ])
 
-        // ->get();
 
-        $products = DB::table('products')
-        ->join('kategoris', 'products.kategori_id', '=', 'kategoris.id')
-        ->join('stoks', 'products.id', '=', 'stoks.product_id')
+        $products = DB::table('drugs')
+        ->join('drug_categories', 'drugs.drug_category_id', '=', 'drug_categories.id')
+        ->join('drug_details', 'drugs.id', '=', 'drug_details.drug_id')
+        ->join('stoks', 'drugs.id', '=', 'stoks.drug_id')
         ->select([
-            'products.*', 'kategoris.name as nama_kategori','stoks.current_stok as quantity'
+            'drugs.*','drug_details.desc','drug_details.photo as image',
+            'drug_details.sellprice as price', 'drug_categories.name as nama_kategori','stoks.current_stok as quantity'
         ])
-        ->orderBy('products.id', 'desc');
+        ->orderBy('drugs.id', 'desc');
 
 
 
 
 
         //dd($products);
-        // $products = Product::Join('stoks', 'products.id', '=', 'stoks.product_id')
+        // $products = Product::Join('stoks', 'products.id', '=', 'stoks.drug_id')
+        // ->select([
         // ->select([
         //     'products.*', 'stoks.current_stok as quantity'
         // ])
         // ->get();
 
         if ($request->search) {
-            $products = $products->where('products.name', 'LIKE', "%{$request->search}%" )
-            ->orWhere('products.kategori_id','like',"%{$request->search}%");
+            $products = $products->where('drugs.name', 'LIKE', "%{$request->search}%" )
+            ->orWhere('drugs.drug_category_id','like',"%{$request->search}%");
 
 
         }
         if ($request->kategori) {
-            $products = $products->where('kategori_id', '=', "{$request->kategori}");
+            $products = $products->where('drug_category_id', '=', "{$request->kategori}");
         }
         $products = $products->latest()->paginate(10);
         if (request()->wantsJson()) {
@@ -113,7 +110,7 @@ class ProductController extends Controller
             'barcode' => $request->barcode,
             'harga_beli' => $request->harga_beli,
             'price' => $request->price,
-            'kategori_id' => $request->kategori_id,
+            'drug_category_id' => $request->drug_category_id,
             'status' => $request->status,
 
         ]);

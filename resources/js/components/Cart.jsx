@@ -99,9 +99,9 @@ class Cart extends Component {
                 });
         }
     }
-    handleChangeQty(product_id, qty) {
+    handleChangeQty(drug_id, qty) {
         const cart = this.state.cart.map(c => {
-            if (c.id === product_id) {
+            if (c.id === drug_id) {
                 c.pivot.quantity = qty;
             }
             return c;
@@ -110,7 +110,7 @@ class Cart extends Component {
         this.setState({ cart });
 
         axios
-            .post("/admin/cart/change-qty", { product_id, quantity: qty })
+            .post("/admin/cart/change-qty", { drug_id, quantity: qty })
             .then(res => { })
             .catch(err => {
                 Swal.fire("Error!", err.response.data.message, "error");
@@ -118,15 +118,15 @@ class Cart extends Component {
     }
 
     getTotal(cart) {
-        const total = cart.map(c => c.pivot.quantity * c.price);
+        const total = cart.map(c => c.pivot.quantity * c.SellPrice);
         return sum(total).toFixed(2);
     }
 
-    handleClickDelete(product_id) {
+    handleClickDelete(drug_id) {
         axios
-            .post("/admin/cart/delete", { product_id, _method: "DELETE" })
+            .post("/admin/cart/delete", { drug_id, _method: "DELETE" })
             .then(res => {
-                const cart = this.state.cart.filter(c => c.id !== product_id);
+                const cart = this.state.cart.filter(c => c.id !== drug_id);
                 this.setState({ cart });
             });
     }
@@ -179,7 +179,7 @@ class Cart extends Component {
                         ...product,
                         pivot: {
                             quantity: 1,
-                            product_id: product.id,
+                            drug_id: product.id,
                             user_id: 1
                         }
                     };
@@ -301,7 +301,7 @@ class Cart extends Component {
                                             <td className="text-right">
                                                 {window.APP.currency_symbol}{" "}
                                                 {(
-                                                    c.price * c.pivot.quantity
+                                                    c.SellPrice * c.pivot.quantity
                                                 ).toFixed(2)}
                                             </td>
                                         </tr>

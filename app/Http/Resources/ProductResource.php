@@ -15,17 +15,21 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
+        $path = base_path('public/photo');
         return [
             'id'=> $this->id,
             'name'=> $this->name,
-            'description' => $this->description,
+            'desc' => $this->desc,
             'image' => $this->image,
             'barcode' => $this->barcode,
-            'price' => $this->price,
+            'SellPrice' => $this->SellPrice,
             'quantity' => $this->quantity,
-            'status' => $this->status,
+
             'created_at' => $this->created_at,
-            'image_url' => Storage::url($this->image)
+
+            'image_url' => ( url('/photos/drugs').'/'.$this->image )
+
+
         ];
     }
 }
