@@ -19,6 +19,29 @@
 
 
 
+
+            <div class="form-group mt-3 mb-3">
+                <label for="buyPriceEdit">Harga Beli</label>
+                  <input type="number" class="form-control" id="buyPriceEdit" name="buyPriceEdit">
+                      @error('buyPriceEdit')
+                      <span class="text-danger">{{$message}}</span>
+                      @enderror
+            </div>
+
+
+            <div class="form-group mt-3 mb-3">
+              <label for="sellPriceEdit">Harga Jual</label>
+                <input type="number" class="form-control" id="sellPriceEdit" name="sellPriceEdit">
+                    @error('sellPriceEdit')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
+            </div>
+
+
+
+
+
+
             <div class="form-group mt-3 mb-3">
                 <label for="drugCategoryEdit" class="col-sm-12 col-form-label">Kategori Obat</label>
                 <div class="col-sm-12">
@@ -45,7 +68,18 @@
                 </div>
             </div>
 
-         
+
+
+            <div class="form-group mt-3 mb-3">
+                <label for="barcodeEdit">Barcode</label>
+                <input type="textarea" class="form-control" id="barcodeEdit" name="barcodeEdit">
+                @error('barcodeEdit')
+                  <span class="text-danger">{{$message}}</span>
+                @enderror
+            </div>
+
+
+
 
           </div>
           <div class="modal-footer">

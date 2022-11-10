@@ -1,6 +1,5 @@
 <script>
-    let drug_id;
-    let drug_detail_id;
+    let supplier_id;
 
     const create = () => {
         $('#createForm').trigger('reset');
@@ -9,7 +8,7 @@
 
     const deleteData = (id) => {
         Swal.fire({
-            title: 'Apa anda yakin untuk menghapus data obat ini?',
+            title: 'Apa anda yakin untuk data supplier ini?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Hapus',
@@ -29,7 +28,7 @@
 
                 $.ajax({
                     type: "delete",
-                    url: `/drug/${id}`,
+                    url: `/supplier/${id}`,
                     dataType: "json",
                     success: function (response) {
                         Swal.close();
@@ -56,10 +55,6 @@
     }
 
     const edit = (id) => {
-
-        var formData = new FormData($("#editForm")[0]);
-
-
         Swal.fire({
             title: 'Mohon tunggu',
             showConfirmButton: false,
@@ -69,76 +64,23 @@
             }
         });
 
-        drug_id = id;
+        supplier_id = id;
 
         $.ajax({
             type: "get",
-            url: `/drug/${drug_id}`,
-            contentType: false,
+            url: `/supplier/${supplier_id}`,
             dataType: "json",
             success: function (response) {
-                // console.log(response)
-                $("#drugNameEdit").val(response.name);
-
-                $("#buyPriceEdit").val(response.buyPrice);
-
-                $("#sellPriceEdit").val(response.sellPrice);
-
-                $("#barcodeEdit").val(response.barcode);
-
-                $("#drugCategoryEdit").val(response.drug_category_id);
-
-                $("#drugTypeEdit").val(response.drug_type_id);
-
+                $("#nameEdit").val(response.name);
+                $("#addressEdit").val(response.address);
+                $("#phoneEdit").val(response.phone);
+                $("#statusEdit").val(response.status);
 
                 Swal.close();
                 $('#editModal').modal('show');
             }
         });
     }
-
-
-
-    const detailDrug =  (id) => {
-
-        var formData = new FormData($("#detailDrugForm")[0]);
-
-        Swal.fire({
-            title: 'Mohon tunggu',
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            willOpen: () => {
-                Swal.showLoading()
-            }
-        });
-
-        drug_id = id;
-
-        $.ajax({
-            type: "get",
-            url: `/drugdetails/${drug_id}`,
-            contentType: false,
-            dataType: "json",
-            success: function (response) {
-
-                $("#drugUnit").val(response.unit_id);
-                $("#drugBPJSStatus").val(response.bpjsStatus);
-                $("#drugPatentStatus").val(response.patentStatus);
-                $("#drugDesc").val(response.desc);
-                $("#drugUsage").val(response.usage);
-                $("#drugDosage").val(response.dosage);
-                $("#unitDesc").val(response.unitDesc);
-                $("#sideEffect").val(response.sideEffect);
-                $("#bpomNum").val(response.bpomNum);
-
-                Swal.close();
-                $('#detailDrugModal').modal('show');
-            }
-        });
-
-    }
-
-
 
     $(function () {
         $.ajaxSetup({
@@ -148,40 +90,29 @@
         });
 
 
-        $('#table').DataTable({
-            order: [],
-            lengthMenu: [[5, 10, 25, 50, -1], ['5', '10', '25', '50', 'All']],
-            filter: true,
-            processing: true,
-            responsive: true,
-            serverSide: true,
-            ajax: {
-                url: '/drug/data'
-            },
-            "columns":
-            [
-                { data: 'DT_RowIndex', orderable: false, searchable: false},
-                { data: 'name', name:'drugs.name'},
-                { data: 'drugcategory', name:'drugs.drug_category_id'},
-                { data: 'drugtype', name:'drugs.drug_type_id'},
-                { data: 'sellPrice', name:'drugs.sellPrice'},
-                { data: 'buyPrice', name:'drugs.buyPrice'},
-                { data: 'barcode', name:'drugs.barcode'},
-                { data: 'action', orderable: false, searchable: false},
-            ]
-        });
+            $('#table').DataTable({
+                order: [],
+                lengthMenu: [[5, 10, 25, 50, -1], ['5', '10', '25', '50', 'All']],
+                filter: true,
+                processing: true,
+                responsive: true,
+                serverSide: true,
+                ajax: {
+                    url: '/supplier/data'
+                },
+                "columns":
+                [
+                    { data: 'DT_RowIndex', orderable: false, searchable: false},
+                    { data: 'name', name:'suppliers.name'},
+                    { data: 'address', name:'suppliers.address'},
+                    { data: 'phone', name:'suppliers.phone'},
+                    { data: 'status', name:'suppliers.status'},
 
-
-
-
-        $('.drugPrice').keyup(function(event) {
-        if(event.which >= 37 && event.which <= 40) return;
-            $(this).val(function(index, value) {
-                return value
-                .replace(/\D/g, "")
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    { data: 'action', orderable: false, searchable: false},
+                ]
             });
-        });
+
+
 
 
         $('#createSubmit').click(function (e) {
@@ -200,7 +131,7 @@
 
             $.ajax({
                 type: "post",
-                url: "/drug",
+                url: "/supplier",
                 data: formData,
                 dataType: "json",
                 cache: false,
@@ -231,8 +162,7 @@
         $('#editSubmit').click(function (e) {
             e.preventDefault();
 
-            var formData = new FormData($("#editForm")[0]);
-
+            var formData = $('#editForm').serialize();
 
             Swal.fire({
                 title: 'Mohon tunggu',
@@ -245,11 +175,10 @@
 
             $.ajax({
                 type: "post",
-                url: `/drug/${drug_id}`,
+                url: `/supplier/${supplier_id}`,
                 data: formData,
                 dataType: "json",
                 cache: false,
-                contentType: false,
                 processData: false,
                 success: function(data) {
                     Swal.close();
@@ -261,57 +190,8 @@
                             'success'
                         )
 
-
+                        pengguna_id = null;
                         $('#editModal').modal('hide');
-                        $('#table').DataTable().ajax.reload();
-                    } else {
-                        Swal.fire(
-                            'Error!',
-                            data.msg,
-                            'warning'
-                        )
-                    }
-                }
-            })
-        });
-
-
-
-        $('#detailDrugSubmit').click(function (e) {
-            e.preventDefault();
-
-            var formData = new FormData($("#detailDrugForm")[0]);
-
-
-            Swal.fire({
-                title: 'Mohon tunggu',
-                showConfirmButton: false,
-                allowOutsideClick: false,
-                willOpen: () => {
-                    Swal.showLoading()
-                }
-            });
-
-            $.ajax({
-                type: "post",
-                url: `/drugdetails/${drug_id}`,
-                data: formData,
-                dataType: "json",
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function(data) {
-                    Swal.close();
-
-                    if(data.status) {
-                        Swal.fire(
-                            'Success!',
-                            data.msg,
-                            'success'
-                        )
-
-
-                        $('#detailDrugModal').modal('hide');
                         $('#table').DataTable().ajax.reload();
                     } else {
                         Swal.fire(

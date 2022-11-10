@@ -19,6 +19,9 @@ return new class extends Migration
             $table->foreignId('drug_type_id');
 
             $table->string('name'); //mixagrip, neozep, ultraflu, dsb
+            $table->text('barcode');
+            $table->decimal('buyPrice', 14, 2);
+            $table->decimal('sellPrice', 14, 2);
 
             $table->foreign('drug_category_id')->references('id')->on('drug_categories')->onDelete('restrict');
             $table->foreign('drug_type_id')->references('id')->on('drug_types')->onDelete('restrict');

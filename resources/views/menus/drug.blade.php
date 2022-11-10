@@ -24,15 +24,41 @@
                   <a class="btn btn-warning"
                        href="{{ route('exportdrug') }}">
                               Export Drug Data
-                      </a>
+                  </a>
+
+                {{-- <form action="{{ route('importdrug') }}"
+                    method="POST"
+                    enctype="multipart/form-data">
+                  @csrf
+                  <input type="file" id="importdrug" name="importdrug" hidden/>
+                  <button type="submit" class="btn btn-success"><i class="bi bi-check-circle" ></i><br>Import Data</button>
+                </form> --}}
+
+
+
+                <form action="{{ route('importdrug') }}"
+                      method="POST"
+                      enctype="multipart/form-data">
+                    @csrf
+                    <input type="file" name="drugimport"
+                           class="form-control">
+                    <br>
+                    <button class="btn btn-success">
+                          Import User Data
+                    </button>
+
+                </form>
 
               <table class="table table-hover table-striped table-border" id="table">
 
                   <thead>
                       <th>#</th>
                       <th>Nama Obat</th>
-                      <th>Kategori</th>
+                      <th>Kategori Obat</th>
                       <th>Tipe Obat</th>
+                      <th>Harga Jual</th>
+                      <th>Harga Beli</th>
+                      <th>Barcode</th>
                       <th>Tindakan</th>
                   </thead>
 

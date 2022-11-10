@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DrugDetail extends Model
 {
     protected $fillable = [
-        'buyPrice', 'sellPrice', 'photo', 'bpjsStatus', 'patentStatus', 'desc', 'usage', 'dosage', 'unitsDesc', 'sideEffect', 'bpomNum', 'drug_id', 'unit_id'
+        'photo', 'bpjsStatus', 'patentStatus', 'desc', 'usage', 'dosage', 'unitsDesc', 'sideEffect', 'bpomNum', 'drug_id', 'unit_id'
     ];
 
     protected $hidden = [

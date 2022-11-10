@@ -14,7 +14,7 @@ class Cashier extends Model
         'dateBirth',
         'status',
         'phone',
-        'employee_id'
+        'employeeId',
     ];
 
     protected $hidden = [
