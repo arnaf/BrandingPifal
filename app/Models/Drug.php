@@ -29,4 +29,14 @@ class Drug extends Model
     public function detail() {
         return $this->belongsTo(DrugDetail::class, 'id');
     }
+
+    public function stoks()
+    {
+        return $this->hasMany(Stok::class);
+    }
+
+    public function historystoks()
+    {
+        return $this->hasMany(HistoryStok::class);
+    }
 }
