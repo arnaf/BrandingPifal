@@ -10,7 +10,6 @@ class HistoryStok extends Model
 
         'stok',
         'drug_id',
-        'pembelian_id',
         'penjualan_id',
         'user_id'
     ];

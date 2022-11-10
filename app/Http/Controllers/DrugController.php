@@ -144,10 +144,24 @@ class DrugController extends Controller
                         'name'              => $request->drugName,
 
                         'drug_category_id'  => $request->drugCategory,
+                        'barcode'  => $request->barcode,
+                        'sellPrice'  => $request->sellPrice,
+                        'buyPrice'  => $request->buyPrice,
 
                         'drug_type_id'      => $request->drugType,
 
                         'created_at'        => date('Y-m-d H:i:s')
+                    ]);
+
+                    $drugCreate->stoks()->create([
+                        'current_stok' => 100,
+
+                    ]);
+
+                    $drugCreate->historystoks()->create([
+                        'stok' => 100,
+                        'user_id' => $request->user()->id,
+
                     ]);
 
                     $drugDetail = DrugDetail::create([
@@ -344,7 +358,6 @@ class DrugController extends Controller
 
                 $drugdetail = DrugDetail::where('drug_id', $id)->update([
                     'unit_id'      => $request->drugUnit,
-
                     'bpjsStatus'      => $request->drugBPJSStatus,
                     'patentStatus'      => $request->drugPatentStatus,
                     'desc'      => $request->drugDesc,
