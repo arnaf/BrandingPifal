@@ -18,7 +18,7 @@ class DrugDetail extends Model
 
     public function drug()
     {
-        return $this->belongsTo(Drug::class);
+        return $this->belongsTo(Drug::class, 'id', 'drug_id');
     }
 
 
@@ -26,6 +26,8 @@ class DrugDetail extends Model
     {
         return $this->belongsTo(Unit::class);
     }
+
+
 
 
 }

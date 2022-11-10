@@ -41,4 +41,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+
+    public function cart()
+    {
+        return $this->belongsToMany(Drug::class, 'user_cart')->withPivot('quantity');
+    }
+
+   
+
+
 }
