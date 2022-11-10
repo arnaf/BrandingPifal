@@ -128,6 +128,14 @@
                 </li>
 
 
+                <li>
+                    <a href="{{ url('/cashier') }}">
+                      <i class="bi bi-circle"></i><span>Cashier</span>
+                    </a>
+                </li>
+
+
+
 
                 <li>
                     <a href="">

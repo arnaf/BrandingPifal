@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Models\User;
 use App\Models\Cashier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,17 +17,16 @@ class CashierController extends Controller
     public function index()
     {
         $cashiers= DB::table('cashiers')
-        ->where('id', '>', 2)
         ->latest('cashiers.created_at')
         ->get();
 
 
         $data = [
             'roles'    => $cashiers,
-            'script'   => 'components.scripts.cashier'
+            'script'   => 'menus.scripts.cashier'
         ];
 
-        return view('components.menus.cashier', $data);
+        return view('menus.cashier', $data);
 
     }
 
@@ -42,13 +42,23 @@ class CashierController extends Controller
         ->get();
 
         return DataTables::of($data)
+            // ->editColumn(
+            //     'photo',
+            //     function($row) {
+            //         $data = [
+            //             'photo' => $row->photo
+            //         ];
+
+            //         return view('layouts.components.img.cashier', $data);
+            //     }
+            // )
 
             ->addColumn(
                 'action',
                 function($row) {
                     $data = [
                         'id' => $row->id,
-                        'photo' => $row->photo,
+                        // 'photo' => $row->photo,
                         'name' => $row->name,
                         'employeeId' => $row->employeeId,
                         'dateBirth' => $row->dateBirth,
@@ -57,9 +67,10 @@ class CashierController extends Controller
                         'status' => $row->status,
                     ];
 
-                    return view('components.buttons.cashier', $data);
+                    return view('layouts.components.buttons.cashier', $data);
                 }
             )
+
             ->addIndexColumn()
             ->make(true);
     }
@@ -67,27 +78,17 @@ class CashierController extends Controller
     public function store(Request $request)
     {
 
-        if($request->has('photo')){
-            $cashier = Cashier::where('id')->first();
-            $oldImage = $cashier->photo;
-
-            if($oldImage){
-                $pleaseRemove = base_path('public/photos/cashiers/').$oldImage;
-
-                if(file_exists($pleaseRemove)) {
-                    unlink($pleaseRemove);
-                }
-            }
 
 
-        $extension = $request->file('photo')->getClientOriginalExtension();
 
-        $cashierPhoto = date('YmdHis').'.'.$extension;
+        // $extension = $request->file('photo')->getClientOriginalExtension();
 
-        $path = base_path('public/photos/cashiers');
+        // $cashierPhoto = date('YmdHis').'.'.$extension;
 
-        $request->file('photo')->move($path, $cashierPhoto);
-        }
+        // $path = base_path('public/photos/cashiers');
+
+        // $request->file('photo')->move($path, $cashierPhoto);
+
 
         if($request == NULL) {
             $json = [
@@ -95,24 +96,30 @@ class CashierController extends Controller
                 'status'    => false
             ];
 
-        } if($request->name == NULL) {
+        } if($request->email == NULL) {
+            $json = [
+                'msg'       => 'Mohon masukan email kasir',
+                'status'    => false
+            ];
+
+        } elseif($request->password == NULL) {
+            $json = [
+                'msg'       => 'Mohon masukan password kasir',
+                'status'    => false
+            ];
+
+        } elseif($request->name == NULL) {
             $json = [
                 'msg'       => 'Mohon masukan nama kasir',
                 'status'    => false
             ];
 
-        } elseif($request->photo == NULL){
-            $json = [
-                'msg'       => 'Mohon masukan foto kasir',
-                'status'    => false
-            ];
-        } elseif($request->employeeId == NULL ){
+        }  elseif($request->employeeId == NULL ){
             $json = [
                 'msg'       => 'Mohon masukan nomor pegawai',
                 'status'    => false
             ];
-        }
-         elseif($request->dateBirth == NULL){
+        } elseif($request->dateBirth == NULL){
             $json = [
                 'msg'       => 'Mohon masukan tanggal lahir kasir',
                 'status'    => false
@@ -136,24 +143,32 @@ class CashierController extends Controller
         else {
             try{
 
-                DB::transaction(function() use($request, $cashierPhoto) {
-                    $cashier = Cashier::create([
-                        'photo'         => $cashierPhoto,
-                        'name'      => $request->name,
-                        'nama'         => $request->nama,
-                        'tgl_lhr'      => $request->tgl_lhr,
-                        'tmp_lhr'      => $request->tmp_lhr,
-                        'pendidikan'   => $request->pendidikan,
-                        'alamat'       => $request->alamat,
+                DB::transaction(function() use($request) {
+
+                    $user = User::create([
+                        'email'     =>  $request->email,
+                        'password'  =>  Hash::make($request->password),
                         'created_at'    => date('Y-m-d H:i:s')
                     ]);
-                    $cashier->syncRoles('cashier');
+                    $user->syncRoles('cashier');
+
+                    $cashier = Cashier::create([
+                        'user_id'       => $user->id,
+                        // 'photo'         => $cashierPhoto,
+                        'name'          => $request->name,
+                        'employeeId'    => $request->employeeId,
+                        'dateBirth'     => $request->dateBirth,
+                        'phone'         => $request->phone,
+                        'address'       => $request->address,
+                        'status'        => $request->status,
+                        'created_at'    => date('Y-m-d H:i:s')
+                    ]);
 
 
                 });
 
                 $json = [
-                    'msg' => 'Member berhasil ditambahkan',
+                    'msg' => 'Kasir berhasil ditambahkan',
                     'status' => true
                 ];
             } catch(Exception $e) {
@@ -170,67 +185,91 @@ class CashierController extends Controller
     public function edit(Request $request, $id)
     {
 
+
+        // if($request->has('photo')){
+        //     $cashier = Cashier::where('id')->first();
+        //     $oldImage = $cashier->photo;
+
+        //     if($oldImage){
+        //         $pleaseRemove = base_path('public/photos/cashiers/').$oldImage;
+
+        //         if(file_exists($pleaseRemove)) {
+        //             unlink($pleaseRemove);
+        //         }
+        //     }
+
+
+        // $extension = $request->file('photo')->getClientOriginalExtension();
+
+        // $cashierPhoto = date('YmdHis').'.'.$extension;
+
+        // $path = base_path('public/photos/cashiers');
+
+        // $request->file('photo')->move($path, $cashierPhoto);
+
+        // }
+
+
+
+
+
         if($request == NULL) {
             $json = [
                 'msg'       => 'Mohon masukan data member',
                 'status'    => false
             ];
 
-        } if($request->namaEdit == NULL) {
+        } if($request->nameEdit == NULL) {
             $json = [
-                'msg'       => 'Mohon masukan nama member',
+                'msg'       => 'Mohon masukan nama kasir',
                 'status'    => false
             ];
 
-        }  elseif($request->tgl_lhrEdit == NULL) {
+        } elseif($request->employeeIdEdit == NULL ){
             $json = [
-                'msg'       => 'Mohon masukan tanggal lahir member',
+                'msg'       => 'Mohon masukan nomor pegawai',
                 'status'    => false
             ];
-        } elseif($request->tmp_lhrEdit == NULL) {
+        } elseif($request->dateBirthEdit == NULL){
             $json = [
-                'msg'       => 'Mohon masukan tempat lahir member',
+                'msg'       => 'Mohon masukan tanggal lahir kasir',
                 'status'    => false
             ];
-        } elseif($request->alamatEdit == NULL) {
+        } elseif($request->phoneEdit == NULL) {
             $json = [
-                'msg'       => 'Mohon masukan alamat member',
+                'msg'       => 'Mohon masukan nomor telepon kasir',
                 'status'    => false
             ];
-        } elseif($request->pendidikanEdit == NULL) {
+        } elseif($request->addressEdit == NULL) {
             $json = [
-                'msg'       => 'Mohon masukan pendidikan terakhir member',
+                'msg'       => 'Mohon masukan alamat kasir',
+                'status'    => false
+            ];
+        } elseif($request->statusEdit == NULL) {
+            $json = [
+                'msg'       => 'Mohon masukan status kasir',
                 'status'    => false
             ];
         } else {
             try{
 
-              DB::transaction(function () use ($request, $id) {
-                $oldCashier = Cashier::where('id', $id)->first();
+                DB::transaction(function() use($request) {
 
-                $oldCashier->roles()->detach();
 
-                if($request->passwordEdit !== null){
-                $cashier = Cashier::where('id', $id)->update([
-                    'nama'         => $request->namaEdit,
-                    'password'     => Hash::make($request->passwordEdit),
-                    'tgl_lhr'      => $request->tgl_lhrEdit,
-                    'tmp_lhr'      => $request->tmp_lhrEdit,
-                    'pendidikan'   => $request->pendidikanEdit,
-                    'alamat'       => $request->alamatEdit,
-                    'updated_at'   => date('Y-m-d H:i:s')
-                ]);
-                } else {
-                    $cashier = Cashier::where('id', $id)->update([
-                        'nama'         => $request->namaEdit,
-                        'tgl_lhr'      => $request->tgl_lhrEdit,
-                        'tmp_lhr'      => $request->tmp_lhrEdit,
-                        'pendidikan'   => $request->pendidikanEdit,
-                        'alamat'       => $request->alamatEdit,
-                        'updated_at'   => date('Y-m-d H:i:s')
+                    $cashier = Cashier::edit([
+
+                        'name'              => $request->nameEdit,
+                        'employeeId'        => $request->employeeIdEdit,
+                        'dateBirth'         => $request->dateBirthEdit,
+                        'phone'             => $request->phoneEdit,
+                        'address'           => $request->addressEdit,
+                        'status'            => $request->statusEdit,
+                        'updated_at'        => date('Y-m-d H:i:s')
                     ]);
-                }
-            });
+
+
+                });
+
 
                 $json = [
                     'msg' => 'Member berhasil diubah',
@@ -250,6 +289,18 @@ class CashierController extends Controller
 
     public function destroy($id)
     {
+
+
+        // $cashier = Cashier::where($id)->first();
+        // $oldImage = $cashier->photo;
+
+        // if($oldImage){
+        //     $pleaseRemove = base_path('public/photos/cashiers/').$oldImage;
+
+        //     if(file_exists($pleaseRemove)) {
+        //         unlink($pleaseRemove);
+        //     }
+        // }
 
             try{
 

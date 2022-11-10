@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
 
-            $table->text('photo');
+            $table->text('photo')->nullable();
             $table->string('name');
             $table->string('employeeId');
             $table->string('dateBirth');
