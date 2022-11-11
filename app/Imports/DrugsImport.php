@@ -35,8 +35,8 @@ class DrugsImport implements ToCollection, WithHeadingRow
         foreach($rows as $row){
             $drug = Drug::create([
                 'name'                => $row['Nama'],
-                'drug_category_id'    => $row['Kategori Obat'],
-                'drug_type_id'        => $row['Tipe Obat'],
+                'drug_category_id'    => $row['ID Kategori Obat'],
+                'drug_type_id'        => $row['ID Tipe Obat'],
                 'buyPrice'            => $row['Harga Jual'],
                 'sellPrice'           => $row['Harga Beli'],
                 'barcode'             => $row['Barcode'],
@@ -44,11 +44,24 @@ class DrugsImport implements ToCollection, WithHeadingRow
 
             DrugDetail::create([
                 'drug_id' => $drug->id,
+                'unit_id' => $row['ID Bentuk Kemasan'],
+                'bpjsStatus' => $row['Status BPJS'],
+                'patentStatus' => $row['Status Kepatenan'],
+                'desc' => $row['Deskripsi Obat'],
+                'usage' => $row['Kegunaan/Manfaat'],
+                'dosage' => $row['Dosis Obat'],
+                'sideEffect' => $row['Efek Samping'],
+                'bpomNum' => $row['Nomor Izin Edar BPOM']
             ]);
 
         }
 
 
+    }
+
+    public function headingRow(): int
+    {
+        return 5;
     }
 
 

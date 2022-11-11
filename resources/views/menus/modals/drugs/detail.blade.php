@@ -24,7 +24,7 @@
 
 
 
-                  
+
 
                   <div class="form-group mt-3 mb-3">
                     <label for="drugPhoto">Foto</label>
@@ -55,8 +55,8 @@
                         <div class="col-sm-12">
                          <select name="drugPatentStatus" id="drugPatentStatus" class="form-control" required>
                             <option value="" selected disabled>Pilih status paten obat</option>
-                                <option value="generik" >Generik</option>
-                                <option value="paten" >Paten</option>
+                                <option value="Generik" >Generik</option>
+                                <option value="Paten" >Paten</option>
                          </select>
                         </div>
                     </div>
@@ -90,14 +90,14 @@
                     </div>
 
 
-
+{{-- 
                     <div class="form-group mt-3 mb-3">
                         <label for="unitDesc">Deskripsi Kemasan</label>
                           <input type="textarea" class="form-control" id="unitDesc" name="unitDesc">
                               @error('unitDesc')
                               <span class="text-danger">{{$message}}</span>
                               @enderror
-                    </div>
+                    </div> --}}
 
 
                     <div class="form-group mt-3 mb-3">
