@@ -25,7 +25,7 @@
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ url('/cart') }}">
+        <a class="nav-link collapsed" href="{{ url('/cart') }}" target="_blank">
           <i class="bi bi-credit-card"></i><span>KASIR</span>
         </a>
       </li><!-- End Tables Nav -->
@@ -35,6 +35,12 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ url('admin/penjualans') }}">
           <i class="bi bi-credit-card"></i><span>Penjualan</span>
+        </a>
+      </li><!-- End Tables Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url('admin/history_stoks') }}" target="_blank">
+          <i class="bi bi-credit-card"></i><span>History Stok</span>
         </a>
       </li><!-- End Tables Nav -->
 
@@ -133,8 +139,8 @@
                 </li>
 
                 <li>
-                    <a href="">
-                      <i class="bi bi-circle"></i><span>Supplier</span>
+                    <a href="{{ url('/doctor') }}">
+                      <i class="bi bi-circle"></i><span>Doctor</span>
                     </a>
                 </li>
             </ul>

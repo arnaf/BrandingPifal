@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\HistoryStockController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -52,6 +53,10 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::delete('/cart/empty', [CartController::class, 'empty']);
 
     Route::resource('penjualans', PenjualanController::class);
+
+    Route::get('history_stoks', [HistoryStockController::class, 'index'])->name('history_stoks.index');;
+    Route::get('history_stoks/list', [HistoryStockController::class, 'getHistories'])->name('history_stoks.list');
+    Route::resource('history_stoks', HistoryStockController::class);
 
     Route::get('cetaknotacustomer/{id}', [PenjualanController::class, 'cetaknotacustomer'])->name('cetaknotacustomer');
 
