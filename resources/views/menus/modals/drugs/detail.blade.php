@@ -90,14 +90,14 @@
                     </div>
 
 
-{{-- 
+
                     <div class="form-group mt-3 mb-3">
                         <label for="unitDesc">Deskripsi Kemasan</label>
                           <input type="textarea" class="form-control" id="unitDesc" name="unitDesc">
                               @error('unitDesc')
                               <span class="text-danger">{{$message}}</span>
                               @enderror
-                    </div> --}}
+                    </div>
 
 
                     <div class="form-group mt-3 mb-3">

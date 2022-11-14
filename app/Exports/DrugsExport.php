@@ -23,7 +23,16 @@ class DrugsExport implements FromCollection, WithHeadings
             'Tipe Obat',
             'Harga Beli',
             'Harga Jual',
-            'Barcode'
+            'Barcode',
+            'Bentuk Kemasan',
+            'Status BPJS',
+            'Status Kepatenan',
+            'Deskripsi Obat',
+            'Kegunaan/Manfaat',
+            'Dosis Obat',
+            
+
+
         ];
     }
     public function collection()

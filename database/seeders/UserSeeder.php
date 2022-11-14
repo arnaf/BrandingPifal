@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserSeeder extends Seeder
@@ -20,5 +21,8 @@ class UserSeeder extends Seeder
             'password' => bcrypt('superadmin'),
         ]);
         $SU -> assignRole('SU');
+
+        Artisan::call('passport:install');
     }
+
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\Artisan;
 
 class RoleSeeder extends Seeder
 {
@@ -64,8 +65,7 @@ class RoleSeeder extends Seeder
         ]);
 
 
-
-
+        
 
 
 
